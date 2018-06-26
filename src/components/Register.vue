@@ -2,7 +2,7 @@
   <v-app>
     <navbar></navbar>
     <v-container>
-      <form-container ref="formContainer" @requiredAction="register()" :fieldHeader="['R','E','G','I','S','T','E','R']" :errors="error"  fieldButton="Register" btnIcon="person_add">
+      <form-container ref="formContainer" @requiredAction="register()" :fieldHeader="['R','E','G','I','S','T','E','R']" :errors="error" fieldButton="Register" btnIcon="person_add">
         <div slot="fieldInput">
           <v-form autocomplete="off">
             <v-container grid-list-lg class="elevation-10 logincontainer">
@@ -13,7 +13,8 @@
                   <v-subheader class="fields">Username</v-subheader>
                 </v-flex>
                 <v-flex xs12 md8>
-                  <v-text-field name="username" :error="UsernameAvailable" label="Enter the Username" :error-messages="UsernameErrors" :prepend-icon="username_icon" v-model.lazy="Username" required @blur="resetUsernameIcon(),delayTouch($v.Username,200),validateUser()" @input="delayTouch($v.Username,500)" @focus="changeUsernameIcon()">
+                  <v-text-field name="username" :error="UsernameAvailable" label="Enter the Username" :error-messages="UsernameErrors" :prepend-icon="username_icon" v-model.lazy="Username" required @blur="resetUsernameIcon(),delayTouch($v.Username,200),validateUser()"
+                    @input="delayTouch($v.Username,500)" @focus="changeUsernameIcon()">
                   </v-text-field>
                 </v-flex>
               </v-layout>
@@ -46,7 +47,8 @@
                   <v-subheader class="fields">E-mail</v-subheader>
                 </v-flex>
                 <v-flex xs12 md8 class="email__field">
-                  <v-text-field name="email" label="Enter the e-mail" :error="EmailAvailable" :error-messages="emailErrors" v-model.lazy="email" :prepend-icon="mail_icon" required @blur="alternateMail(),delayTouch($v.email,200),validateEmail()" @input="delayTouch($v.email,2000)" @focus="mailBox()">
+                  <v-text-field name="email" label="Enter the e-mail" :error="EmailAvailable" :error-messages="emailErrors" v-model.lazy="email" :prepend-icon="mail_icon" required @blur="alternateMail(),delayTouch($v.email,200),validateEmail()" @input="delayTouch($v.email,2000)"
+                    @focus="mailBox()">
                   </v-text-field>
                 </v-flex>
               </v-layout>
@@ -96,7 +98,7 @@
                       <v-subheader class="fields">Is this</v-subheader>
                     </v-flex>
                   </transition>
-                  <transition name="soc__category" appear>  
+                  <transition name="soc__category" appear>
                     <v-layout row wrap>
                       <v-flex xs12>
                         <v-checkbox label="Approving Faculty" :error-messages="approvingErrors" append-icon="supervisor_account" color="cyan lighten-2" v-model="ApprovingFaculty" @blur="delayTouch($v.ApprovingFaculty)" @input="delayTouch($v.ApprovingFaculty)"></v-checkbox>
@@ -111,7 +113,7 @@
   
   
               <!-- approving and managing faculty selection for society -->
-              <transition name="" mode="out-in">
+              <transition name="soc__head" mode="out-in">
                 <v-container v-if="Cultural || Technical || Techno_Managerial" key="all">
                   <v-layout>
                     <v-flex class="hidden-sm-and-down" md4>
@@ -124,22 +126,24 @@
                   <v-layout>
                     <v-flex class="hidden-sm-and-down" md4>
                       <v-subheader class="fields"><span>Approving Faculty</span><span v-if="Techno_Managerial">(Cultural)</span></v-subheader>
-                    </v-flex>  
+                    </v-flex>
                     <v-flex xs12 md8>
-                      <v-select :items="Approving_Faculty_Array" v-model="App_Faculty" item-text="username" item-value="_id" label="Select Approving Faculty for the society" autocomplete required :error-messages="approveselectErrors" @blur="delayTouch($v.App_Faculty,100)" @input="delayTouch($v.App_Faculty,500)"></v-select>
+                      <v-select :items="Approving_Faculty_Array" v-model="App_Faculty" item-text="username" item-value="_id" label="Select Approving Faculty for the society" autocomplete required :error-messages="approveselectErrors" @blur="delayTouch($v.App_Faculty,100)"
+                        @input="delayTouch($v.App_Faculty,500)"></v-select>
                     </v-flex>
                   </v-layout>
   
-  
-                  <v-layout v-if="Techno_Managerial">
-                    <v-flex class="hidden-sm-and-down" md4>
-                      <v-subheader class="fields ">Approving Faculty(Techinal)</v-subheader>
-                    </v-flex>
-                    <v-flex xs12 md8>
-                      <v-select :items="Approving_Faculty_Array" v-model="Tech_App_Faculty" item-text="username" item-value="_id" label="Select Approving Faculty for the society" autocomplete required :error-messages="techapproveselectErrors" @blur="delayTouch($v.Tech_App_Faculty,100)"
-                        @input="delayTouch($v.Tech_App_Faculty,500)"></v-select>
-                    </v-flex>
-                  </v-layout>
+                  <transition name="soc__head" mode="out-in">
+                    <v-layout v-if="Techno_Managerial">
+                      <v-flex class="hidden-sm-and-down" md4>
+                        <v-subheader class="fields ">Approving Faculty(Techinal)</v-subheader>
+                      </v-flex>
+                      <v-flex xs12 md8>
+                        <v-select :items="Approving_Faculty_Array" v-model="Tech_App_Faculty" item-text="username" item-value="_id" label="Select Approving Faculty for the society" autocomplete required :error-messages="techapproveselectErrors" @blur="delayTouch($v.Tech_App_Faculty,100)"
+                          @input="delayTouch($v.Tech_App_Faculty,500)"></v-select>
+                      </v-flex>
+                    </v-layout>
+                  </transition>
                 </v-container>
               </transition>
   

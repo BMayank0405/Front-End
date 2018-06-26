@@ -7,10 +7,11 @@
   
         <v-flex xs12 v-for="(btn,index) in btns" :key="index">
           <v-btn round :to="btn.to" :large="!small" color="primary">
-            {{btn.name}}
             <v-avatar>
               <v-icon :medium="!small">{{btn.icon}}</v-icon>
             </v-avatar>
+            {{btn.name}}
+  
           </v-btn>
         </v-flex>
   
@@ -21,6 +22,7 @@
 </template>
 
 <script>
+
 export default {
   props: {
     btns: {
@@ -59,7 +61,7 @@ export default {
 }
 
 .btn {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
 }
 
 @media screen and (max-width: 560px) {

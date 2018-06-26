@@ -9,7 +9,7 @@
         </page-header>
         <page-svg></page-svg>
   
-        <page-buttons :btns="btns"></page-buttons>
+         <page-buttons :btns="btns"></page-buttons>
   
       </v-layout>
     </v-container>
@@ -18,7 +18,6 @@
 
 <script>
 import CommonRequest from "@/services/CommonRequest";
-
 //code-splitted imports
 const Navbar = () => import("./Navbar");
 const PageHeader = () => import("./Commons/PageHeader");
@@ -42,10 +41,11 @@ export default {
         },
         {
           name: "Update Society/Faculty",
+          icon: "update",
           to: "/UpdateSocietyFaculty"
         },
         {
-          name: "Add Venue",
+          name: "Add/Remove Venue",
           icon: "add_location",
           to: "/UpdateSocietyFaculty"
         },
@@ -103,6 +103,7 @@ export default {
     width: 90%;
   }
 }
+
 @media screen and (min-width: 701px) and (max-width: 900px) {
   .container {
     width: 80%;
