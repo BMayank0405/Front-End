@@ -7,7 +7,7 @@ export default {
   register(data) {
     return AxiosAdmin().post("/society-faculty-register", data);
   },
-  userById(data) {
+  userbyId(data) {
     return AxiosAdmin().get("/userbyId", data);
   },
   createEvent(data) {
@@ -26,9 +26,12 @@ export default {
     return AxiosAdmin().get("get-head");
   },
   ValidateUsername(data) {
-    return AxiosAdmin().put("valid-username", data);
+    return AxiosAdmin().get("valid-username", data);
   },
   ValidateEmail(data) {
-    return AxiosAdmin().put("valid-email", data);
+    return AxiosAdmin().get("valid-email", data);
+  },
+  getAllUsers() {
+    return AxiosAdmin().get("getAllUsers");
   }
 };

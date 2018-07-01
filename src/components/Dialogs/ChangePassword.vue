@@ -9,7 +9,7 @@
           <v-subheader class="fields">New Password</v-subheader>
         </v-flex>
         <v-flex xs12 m8>
-          <v-text-field name="password" label="Enter your new password" hint="At least 6 characters" v-model.lazy="newPassword" min="6" prepend-icon="vpn_key" :append-icon="visibility_icon ? 'visibility' : 'visibility_off'" :append-icon-cb="() => (visibility_icon = !visibility_icon)"
+          <v-text-field name="password" label="Enter your new password" hint="At least 6 characters" v-model.lazy="newPassword" min="6" prepend-icon="vpn_key" :append-icon="visibility_icon ? 'visibility' : 'visibility_off'" @click:append="visibility_icon = !visibility_icon"
             :type="visibility_icon ? 'text': 'password'" required :error-messages="newPasswordErrors" @blur="delayTouch($v.newPassword,100)" @input="delayTouch($v.newPassword,100)" autocomplete></v-text-field>
         </v-flex>
       </v-layout>

@@ -60,7 +60,7 @@
   
       <v-layout wrap justify-center pr-2 mt-5 mb-4>
         <v-flex sm12 class="center">
-          <h2>{{message}}</h2>
+          <h2>{{SuccessMessage}}</h2>
         </v-flex>
       </v-layout>
   
@@ -91,6 +91,14 @@ export default {
   },
   props: {
     SuccessMessage: {
+      type: String,
+      required: true
+    },
+    head: {
+      type: String,
+      required: true
+    },
+    icon: {
       type: String,
       required: true
     }

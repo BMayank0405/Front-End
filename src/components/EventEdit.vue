@@ -143,11 +143,6 @@
               <v-dialog v-model="eventreg" max-width="500" @input="resetOpacity">
                 <event-success SuccessMessage="Event has been editted successfully."></event-success>
               </v-dialog>
-  
-              <v-dialog v-model="eventfail" @input="resetOpacity()" max-width="500">
-                <event-fail :error="failerror"></event-fail>
-              </v-dialog>
-  
             </v-container>
           </v-form>
         </div>
@@ -175,8 +170,7 @@ export default {
     navbar: Navbar,
     "form-container": FormContainer,
     "event-clash": EventClash,
-    "event-success": EventSuccess,
-    "event-fail": EventFail
+    "event-success": EventSuccess
   },
   mixins: [validationMixin],
   data() {
@@ -542,34 +536,34 @@ export default {
       }
     }, 700),
     updateEvent: async function() {
-        try {
-          const response = await SocietyRequest.editEvent({
-            name: deburr(this.EventName),
-            description: deburr(this.description),
-            venueId: this.venue._id,
-            date: {
-              startDate: this.startDate,
-              endDate: this.endDate
-            },
-            time: {
-              startTime: this.startTime,
-              endTime: this.endTime
-            },
-            coordinator: {
-              name: deburr(this.coordinatorName),
-              phone: this.coordinatorPhone
-            },
-            formUrl: this.formUrl
-          });
-          await localStorage.removeItem("id");
-          this.eventreg = true;
-          this.modalActive = true;
-        } catch (err) {
-          if (err) this.failerror = err.response.data.replace(/"/g,'');
-          else this.failerror = "Internal Server Error";
-          this.eventfail = true;
-          this.modalActive = true;
-        }
+      try {
+        const response = await SocietyRequest.editEvent({
+          name: deburr(this.EventName),
+          description: deburr(this.description),
+          venueId: this.venue._id,
+          date: {
+            startDate: this.startDate,
+            endDate: this.endDate
+          },
+          time: {
+            startTime: this.startTime,
+            endTime: this.endTime
+          },
+          coordinator: {
+            name: deburr(this.coordinatorName),
+            phone: this.coordinatorPhone
+          },
+          formUrl: this.formUrl
+        });
+        await localStorage.removeItem("id");
+        this.eventreg = true;
+        this.modalActive = true;
+      } catch (err) {
+        if (err) this.failerror = err.response.data.replace(/"/g, "");
+        else this.failerror = "Internal Server Error";
+        this.eventfail = true;
+        this.modalActive = true;
+      }
     },
     delayTouch: function($v, time) {
       $v.$reset();

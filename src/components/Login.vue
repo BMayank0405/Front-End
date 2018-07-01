@@ -28,7 +28,7 @@
                   <v-subheader class="fields">Password</v-subheader>
                 </v-flex>
                 <v-flex xs12 md9 class="pass__field">
-                  <v-text-field name="password" label="Enter the password" hint="At least 8 characters" v-model.lazy="password" min="8" :prepend-icon="password_icon" :append-icon="visibility_icon ? 'visibility' : 'visibility_off'" :append-icon-cb="() => (visibility_icon = !visibility_icon)"
+                  <v-text-field name="password" label="Enter the password" hint="At least 8 characters" v-model.lazy="password" min="8" :prepend-icon="password_icon" :append-icon="visibility_icon ? 'visibility' : 'visibility_off'" @click:append="visibility_icon = !visibility_icon"
                     :type="visibility_icon ? 'text': 'password'" required :error-messages="passwordErrors" @blur="visible(),delayTouch($v.password,100)" @input="delayTouch($v.password,100)" @focus="hide()"></v-text-field>
                 </v-flex>
               </v-layout>

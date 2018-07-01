@@ -14,7 +14,7 @@
                   <v-subheader class="fields">Event Name</v-subheader>
                 </v-flex>
                 <v-flex xs12 md8>
-                  <v-text-field label="Enter your event's name" :error-messages="EventNameErrors" v-model.lazy="EventName" prepend-icon="euro_symbol" required @blur="delayTouch($v.EventName,200)" @input="delayTouch($v.EventName,1000)">
+                  <v-text-field label="Enter your event's name" clearable :error-messages="EventNameErrors" v-model.lazy="EventName" prepend-icon="euro_symbol" required @blur="delayTouch($v.EventName,200)" @input="delayTouch($v.EventName,1000)">
                   </v-text-field>
                 </v-flex>
               </v-layout>
@@ -96,7 +96,7 @@
                   <v-subheader class="fields">Description</v-subheader>
                 </v-flex>
                 <v-flex xs12 md8>
-                  <v-text-field label="Description" v-model.lazy="description" counter="140" single-line auto-grow prepend-icon="description" :error-messages="descriptionErrors" required @blur="delayTouch($v.description,200)" @input="delayTouch($v.description,2000)">
+                  <v-text-field label="Description" clearable v-model.trim="description" counter="140" single-line auto-grow prepend-icon="description" :error-messages="descriptionErrors" required @blur="delayTouch($v.description,200)" @input="delayTouch($v.description,2000)">
                   </v-text-field>
                 </v-flex>
               </v-layout>
@@ -107,7 +107,7 @@
                   <v-subheader class="fields">Co-ordinator's Name</v-subheader>
                 </v-flex>
                 <v-flex xs12 md8>
-                  <v-text-field label="Enter Co-ordinator's Name" v-model.lazy="coordinatorName" prepend-icon="record_voice_over" required :error-messages="coordinatorNameErrors" @blur="delayTouch($v.coordinatorName,200)" @input="delayTouch($v.coordinatorName,200)">
+                  <v-text-field label="Enter Co-ordinator's Name" clearable v-model.lazy="coordinatorName" prepend-icon="record_voice_over" required :error-messages="coordinatorNameErrors" @blur="delayTouch($v.coordinatorName,200)" @input="delayTouch($v.coordinatorName,200)">
                   </v-text-field>
                 </v-flex>
               </v-layout>
@@ -118,7 +118,7 @@
                   <v-subheader class="fields">Co-ordinator's Number</v-subheader>
                 </v-flex>
                 <v-flex xs12 md8>
-                  <v-text-field name="coordinatorphone" label="Enter Co-ordinator's Number" single-line v-model="coordinatorPhone" type="tel" prepend-icon="phone_iphone" required :error-messages="coordinatorPhoneErrors" @blur="delayTouch($v.coordinatorPhone,200)" @input="delayTouch($v.coordinatorPhone,200)"></v-text-field>
+                  <v-text-field name="coordinatorphone" clearable label="Enter Co-ordinator's Number" single-line v-model="coordinatorPhone" type="tel" prepend-icon="phone_iphone" required :error-messages="coordinatorPhoneErrors" @blur="delayTouch($v.coordinatorPhone,200)" @input="delayTouch($v.coordinatorPhone,200)"></v-text-field>
                 </v-flex>
               </v-layout>
   
@@ -128,7 +128,7 @@
                   <v-subheader class="fields">Form Url</v-subheader>
                 </v-flex>
                 <v-flex xs12 md8>
-                  <v-text-field name="formurl" label="Enter Form Url" v-model.lazy="formUrl" single-line prepend-icon="share" required :error-messages="formUrlErrors" @blur="delayTouch($v.formUrl,200)" @input="delayTouch($v.formUrl,200)"></v-text-field>
+                  <v-text-field name="formurl" clearable label="Enter Form Url" v-model.lazy="formUrl" single-line prepend-icon="share" required :error-messages="formUrlErrors" @blur="delayTouch($v.formUrl,200)" @input="delayTouch($v.formUrl,200)"></v-text-field>
                 </v-flex>
               </v-layout>
   
@@ -158,7 +158,7 @@
     </v-dialog>
   
     <v-dialog v-model="eventreg" max-width="500">
-      <event-success SuccessMessage="Event has been created successfully." @clicked="evenreg = false"></event-success>
+      <event-success head="Success" icon="thumb" SuccessMessage="Event has been created successfully." @clicked="evenreg = false"></event-success>
     </v-dialog>
   
     <v-dialog v-model="eventclash"  max-width="500">
@@ -588,60 +588,59 @@ export default {
       }
     }, 700),
     createEvent: async function() {
-        let event = {
-          name: deburr(this.EventName),
-          description: deburr(this.description),
-          venueId: this.venue,
-          date: {
-            startDate: this.startDate,
-            endDate: this.endDate
-          },
-          time: {
-            startTime: this.startTime,
-            endTime: this.endTime
-          },
-          coordinator: {
-            name: deburr(this.coordinatorName),
-            phone: parseInt(this.coordinatorPhone, 10)
-          },
-          formUrl: this.formUrl
-        };
-        if (this.Cultural) {
-          event.Type = 0;
-        } else if (this.Technical) {
-          event.Type = 1;
-        }
-        try {
-          const response = await SocietyRequest.createEvent(event);
-          this.eventreg = true;
-        } catch (err) {
-          if (err) {
-            if (err.response == undefined) {
-              this.dialogIcon = "wifi_off";
-              this.dialogHeader = "Offline";
-              this.response = "Please try again later";
-            } else {
-              this.dialogIcon = "add_alert";
-              this.dialogHeader = "Error !";
-              if (err.response.data.includes("Unauthorized")) {
-                this.response = "Your session has expired";
-              } else {
-                this.response = err.response.data.replace(/"/g,'');;
-              }
-            }
+      console.log(this.description);
+      let event = {
+        name: deburr(this.EventName),
+        description: deburr(this.description),
+        venueId: this.venue,
+        date: {
+          startDate: this.startDate,
+          endDate: this.endDate
+        },
+        time: {
+          startTime: this.startTime,
+          endTime: this.endTime
+        },
+        coordinator: {
+          name: deburr(this.coordinatorName),
+          phone: parseInt(this.coordinatorPhone, 10)
+        },
+        formUrl: this.formUrl
+      };
+      if (this.Cultural) {
+        event.Type = 0;
+      } else if (this.Technical) {
+        event.Type = 1;
+      }
+      try {
+        const response = await SocietyRequest.createEvent(event);
+        this.eventreg = true;
+      } catch (err) {
+        if (err) {
+          if (err.response == undefined) {
+            this.dialogIcon = "wifi_off";
+            this.dialogHeader = "Offline";
+            this.response = "Please try again later";
           } else {
-            this.dialogIcon = "warning";
+            this.dialogIcon = "add_alert";
             this.dialogHeader = "Error !";
-            this.response = "Internal Server Error";
+            if (err.response.data.includes("Unauthorized")) {
+              this.response = "Your session has expired";
+            } else {
+              this.response = err.response.data.replace(/"/g, "");
+            }
           }
-
-          this.resp = true;
+        } else {
+          this.dialogIcon = "warning";
+          this.dialogHeader = "Error !";
+          this.response = "Internal Server Error";
         }
 
+        this.resp = true;
+      }
     },
     delayTouch: function($v, time = 0) {
       $v.$reset();
-      console.log(this.touchMap);
       if (this.touchMap.has($v)) clearTimeout(this.touchMap.get($v));
       this.touchMap.set($v, setTimeout($v.$touch, time));
     },

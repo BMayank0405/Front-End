@@ -13,7 +13,7 @@
                   <v-subheader class="fields">Username</v-subheader>
                 </v-flex>
                 <v-flex xs12 md8>
-                  <v-text-field name="username" :error="UsernameAvailable" label="Enter the Username" :error-messages="UsernameErrors" :prepend-icon="username_icon" v-model.lazy="Username" required @blur="resetUsernameIcon(),delayTouch($v.Username,200),validateUser()"
+                  <v-text-field name="username" clearable :error="UsernameAvailable" label="Enter the Username" :error-messages="UsernameErrors" :prepend-icon="username_icon" v-model.lazy="Username" required @blur="resetUsernameIcon(),delayTouch($v.Username,200),validateUser()"
                     @input="delayTouch($v.Username,500)" @focus="changeUsernameIcon()">
                   </v-text-field>
                 </v-flex>
@@ -25,7 +25,7 @@
                   <v-subheader class="fields">Password</v-subheader>
                 </v-flex>
                 <v-flex xs12 md8 class="pass__field">
-                  <v-text-field name="password" label="Enter the password" hint="At least 8 characters" v-model.lazy="password" min="8" prepend-icon="vpn_key" :append-icon="visibility_icon ? 'visibility' : 'visibility_off'" :append-icon-cb="() => (visibility_icon = !visibility_icon)"
+                  <v-text-field name="password" clearable label="Enter the password" hint="At least 8 characters" v-model.lazy="password" min="8" prepend-icon="vpn_key" :append-icon="visibility_icon ? 'visibility' : 'visibility_off'" @click:append="visibility_icon = !visibility_icon"
                     :type="visibility_icon ? 'text': 'password'" required :error-messages="passwordErrors" @blur="delayTouch($v.password,100),removeKey()" @input="delayTouch($v.password,500)" @focus="moveKey()"></v-text-field>
                 </v-flex>
               </v-layout>
@@ -36,7 +36,7 @@
                   <v-subheader class="fields">Name</v-subheader>
                 </v-flex>
                 <v-flex xs12 md8>
-                  <v-text-field label="Enter the name" :error-messages="nameErrors" :prepend-icon="name_icon" v-model.lazy="name" required @blur="resetNameIcon(),delayTouch($v.name,100)" @input="delayTouch($v.name,500)" @focus="changeNameIcon()">
+                  <v-text-field label="Enter the name" clearable :error-messages="nameErrors" :prepend-icon="name_icon" v-model.lazy="name" required @blur="resetNameIcon(),delayTouch($v.name,100)" @input="delayTouch($v.name,500)" @focus="changeNameIcon()">
                   </v-text-field>
                 </v-flex>
               </v-layout>
@@ -47,7 +47,7 @@
                   <v-subheader class="fields">E-mail</v-subheader>
                 </v-flex>
                 <v-flex xs12 md8 class="email__field">
-                  <v-text-field name="email" label="Enter the e-mail" :error="EmailAvailable" :error-messages="emailErrors" v-model.lazy="email" :prepend-icon="mail_icon" required @blur="alternateMail(),delayTouch($v.email,200),validateEmail()" @input="delayTouch($v.email,2000)"
+                  <v-text-field name="email" label="Enter the e-mail" clearable :error="EmailAvailable" :error-messages="emailErrors" v-model.lazy="email" :prepend-icon="mail_icon" required @blur="alternateMail(),delayTouch($v.email,200),validateEmail()" @input="delayTouch($v.email,2000)"
                     @focus="mailBox()">
                   </v-text-field>
                 </v-flex>
@@ -573,10 +573,10 @@ export default {
         this.resp = true;
       } else {
         let newUser = {
-          username: this.Username,
+          username: this.Username.trim(),
           password: this.password,
-          name: this.name,
-          email: this.email,
+          name: this.name.trim(),
+          email: this.email.trim(),
           flag: this.flag
         };
         if (this.flag == 0 || this.flag == 1 || this.flag == 2) {
@@ -652,7 +652,7 @@ export default {
       if (this.error[0] == false) {
         try {
           const response = await AdminRequest.ValidateUsername({
-            username: this.Username
+            params: { username: this.Username }
           });
         } catch (err) {
           if (err) {
@@ -674,7 +674,7 @@ export default {
       if (this.error[3] == false) {
         try {
           const response = await AdminRequest.ValidateEmail({
-            email: this.email
+            params: { email: this.email }
           });
         } catch (err) {
           if (err) {

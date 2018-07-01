@@ -76,12 +76,6 @@ export default new Router({
       name: "PendingEvents",
       component: () =>
         import ("@/components/PendingEvents")
-    },
-        {
-      path: "/test",
-      name: "test",
-      component: () =>
-        import ("@/components/test")
     }
   ]
 });

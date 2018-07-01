@@ -26,7 +26,7 @@
       </v-layout>
   
   
-      <v-dialog v-model="editmodal"  max-width="500px">
+      <!-- <v-dialog v-model="editmodal"  max-width="500px">
         <suggest-edit @clicked="edit"></suggest-edit>
       </v-dialog>
   
@@ -36,7 +36,7 @@
   
       <v-dialog v-model="Failure" @input="window.location.reload()" max-width="500px">
         <event-fail :error="failerror"></event-fail>
-      </v-dialog>
+      </v-dialog> -->
     </v-container>
   
   
@@ -63,8 +63,7 @@ export default {
     "event-card": Card,
     "card-button": CardButton,
     "suggest-edit": SuggestEdit,
-    "event-success": EventSuccess,
-    "event-fail": EventFail
+    "event-success": EventSuccess
   },
   data() {
     return {
