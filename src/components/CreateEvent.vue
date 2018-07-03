@@ -14,7 +14,7 @@
                   <v-subheader class="fields">Event Name</v-subheader>
                 </v-flex>
                 <v-flex xs12 md8>
-                  <v-text-field label="Enter your event's name" clearable :error-messages="EventNameErrors" v-model.lazy="EventName" prepend-icon="euro_symbol" required @blur="delayTouch($v.EventName,200)" @input="delayTouch($v.EventName,1000)">
+                  <v-text-field label="Enter your event's name" clearable :error-messages="EventNameErrors" :success="!error[0]" v-model.lazy="EventName" prepend-icon="euro_symbol" required @blur="delayTouch($v.EventName,200)" @input="delayTouch($v.EventName,1000)">
                   </v-text-field>
                 </v-flex>
               </v-layout>
@@ -24,7 +24,7 @@
                   <v-subheader class="fields">Select Venue</v-subheader>
                 </v-flex>
                 <v-flex xs12 md8>
-                  <v-select class="select__box" :items="venues" v-model="venue" item-text="name" item-value="_id" label="Select Venue" prepend-icon="edit_location" required :error-messages="venueErrors" @blur="delayTouch($v.venue,0)" @input="delayTouch($v.venue,2000)"></v-select>
+                  <v-autocomplete class="select__box" clearable :success="!error[1]" :items="venues" v-model="venue" item-text="name" item-value="_id" label="Select Venue" prepend-icon="edit_location" required :error-messages="venueErrors" @blur="delayTouch($v.venue,0)" @input="delayTouch($v.venue,500)"></v-autocomplete>
                 </v-flex>
               </v-layout>
   
@@ -36,7 +36,7 @@
                 </v-flex>
                 <v-flex xs12 md8>
                   <v-menu ref="startmenu" :close-on-content-click="false" v-model="startmenu" transition="scale-transition" offset-y full-width :nudge-right="40" min-width="290px" :return-value.sync="startDate">
-                    <v-text-field slot="activator" label="Select Start Date" v-model.lazy="startDate" prepend-icon="date_range" readonly required :error-messages="startDateErrors" @blur="delayTouch($v.startDate,200)" @input="delayTouch($v.startDate,200)"></v-text-field>
+                    <v-text-field slot="activator" :success="!error[2]" label="Select Start Date" v-model.lazy="startDate" prepend-icon="date_range" readonly required :error-messages="startDateErrors" @blur="delayTouch($v.startDate,0)" @input="delayTouch($v.startDate,200)"></v-text-field>
                     <v-date-picker v-model="startDate" :allowed-dates="validDates" scrollable>
                       <v-spacer></v-spacer>
                       <v-btn flat color="primary" @click="startmenu = false">Cancel</v-btn>
@@ -53,7 +53,7 @@
                 </v-flex>
                 <v-flex xs12 md8>
                   <v-menu ref="endmenu" :close-on-content-click="false" v-model="endmenu" transition="scale-transition" offset-y full-width :nudge-right="40" min-width="290px" :return-value.sync="endDate">
-                    <v-text-field slot="activator" label="Select End Date" v-model.lazy="endDate" prepend-icon="date_range" readonly required :error-messages="endDateErrors" @blur="delayTouch($v.endDate,200)" @input="delayTouch($v.endDate,200)"></v-text-field>
+                    <v-text-field slot="activator" :success="!error[3]" label="Select End Date" v-model.lazy="endDate" prepend-icon="date_range" readonly required :error-messages="endDateErrors" @blur="delayTouch($v.endDate,0)" @input="delayTouch($v.endDate,200)"></v-text-field>
                     <v-date-picker v-model="endDate" :allowed-dates="validDates" scrollable>
                       <v-spacer></v-spacer>
                       <v-btn flat color="primary" @click="endmenu = false">Cancel</v-btn>
@@ -70,7 +70,7 @@
                 </v-flex>
                 <v-flex xs12 md8>
                   <v-menu ref="startTimemenu" :close-on-content-click="false" v-model="stmenu" transition="scale-transition" offset-y full-width :nudge-right="40" max-width="290px" min-width="290px" :return-value.sync="startTime">
-                    <v-text-field slot="activator" label="Starting Time" v-model.lazy="startTime" prepend-icon="alarm" readonly required :error-messages="startTimeErrors" @blur="delayTouch($v.startTime,200)" @input="delayTouch($v.startTime,200)"></v-text-field>
+                    <v-text-field slot="activator" :success="!error[4]" label="Starting Time" v-model.lazy="startTime" prepend-icon="alarm" readonly required :error-messages="startTimeErrors" @blur="delayTouch($v.startTime,0)" @input="delayTouch($v.startTime,200)"></v-text-field>
   
                     <v-time-picker v-model="startTime" min="9:30" max="19:00" format="24hr" @change="$refs.startTimemenu.save(startTime)"></v-time-picker>
                   </v-menu>
@@ -84,7 +84,7 @@
                 </v-flex>
                 <v-flex xs12 md8>
                   <v-menu ref="endTimemenu" :close-on-content-click="false" v-model="etmenu" transition="scale-transition" offset-y full-width :nudge-right="40" Headermax-width="290px" min-width="290px" :return-value.sync="endTime">
-                    <v-text-field slot="activator" label="Ending Time" v-model.lazy="endTime" prepend-icon="alarm" readonly required :error-messages="endTimeErrors" @blur="getdata(),delayTouch($v.endTime,0)" @input="delayTouch($v.endTime,200)"></v-text-field>
+                    <v-text-field slot="activator" :success="!error[5]" label="Ending Time" v-model.lazy="endTime" prepend-icon="alarm" readonly required :error-messages="endTimeErrors" @blur="getdata(),delayTouch($v.endTime,0)" @input="delayTouch($v.endTime,200)"></v-text-field>
   
                     <v-time-picker v-model="endTime" min="9:30" max="19:00" format="24hr" @change="$refs.endTimemenu.save(endTime)"></v-time-picker>
                   </v-menu>
@@ -96,7 +96,7 @@
                   <v-subheader class="fields">Description</v-subheader>
                 </v-flex>
                 <v-flex xs12 md8>
-                  <v-text-field label="Description" clearable v-model.trim="description" counter="140" single-line auto-grow prepend-icon="description" :error-messages="descriptionErrors" required @blur="delayTouch($v.description,200)" @input="delayTouch($v.description,2000)">
+                  <v-text-field label="Description" :success="!error[6]" clearable v-model.trim="description" counter="140" prepend-icon="description" :error-messages="descriptionErrors" required @blur="delayTouch($v.description,0)" @input="delayTouch($v.description,2000)">
                   </v-text-field>
                 </v-flex>
               </v-layout>
@@ -107,7 +107,7 @@
                   <v-subheader class="fields">Co-ordinator's Name</v-subheader>
                 </v-flex>
                 <v-flex xs12 md8>
-                  <v-text-field label="Enter Co-ordinator's Name" clearable v-model.lazy="coordinatorName" prepend-icon="record_voice_over" required :error-messages="coordinatorNameErrors" @blur="delayTouch($v.coordinatorName,200)" @input="delayTouch($v.coordinatorName,200)">
+                  <v-text-field label="Enter Co-ordinator's Name" clearable :success="!error[7]"v-model.lazy="coordinatorName" prepend-icon="record_voice_over" required :error-messages="coordinatorNameErrors" @blur="delayTouch($v.coordinatorName,200)" @input="delayTouch($v.coordinatorName,200)">
                   </v-text-field>
                 </v-flex>
               </v-layout>
@@ -118,7 +118,7 @@
                   <v-subheader class="fields">Co-ordinator's Number</v-subheader>
                 </v-flex>
                 <v-flex xs12 md8>
-                  <v-text-field name="coordinatorphone" clearable label="Enter Co-ordinator's Number" single-line v-model="coordinatorPhone" type="tel" prepend-icon="phone_iphone" required :error-messages="coordinatorPhoneErrors" @blur="delayTouch($v.coordinatorPhone,200)" @input="delayTouch($v.coordinatorPhone,200)"></v-text-field>
+                  <v-text-field name="coordinatorphone" clearable :success="!error[8]" label="Enter Co-ordinator's Number" single-line v-model="coordinatorPhone" type="tel" prepend-icon="phone_iphone" required :error-messages="coordinatorPhoneErrors" @blur="delayTouch($v.coordinatorPhone,200)" @input="delayTouch($v.coordinatorPhone,200)"></v-text-field>
                 </v-flex>
               </v-layout>
   
@@ -128,7 +128,7 @@
                   <v-subheader class="fields">Form Url</v-subheader>
                 </v-flex>
                 <v-flex xs12 md8>
-                  <v-text-field name="formurl" clearable label="Enter Form Url" v-model.lazy="formUrl" single-line prepend-icon="share" required :error-messages="formUrlErrors" @blur="delayTouch($v.formUrl,200)" @input="delayTouch($v.formUrl,200)"></v-text-field>
+                  <v-text-field name="formurl" :success="!error[9]" clearable label="Enter Form Url" v-model.lazy="formUrl" single-line prepend-icon="share" required :error-messages="formUrlErrors" @blur="delayTouch($v.formUrl,200)" @input="delayTouch($v.formUrl,200)"></v-text-field>
                 </v-flex>
               </v-layout>
   
@@ -138,10 +138,10 @@
                 </v-flex>
                 <v-layout row wrap md8>
                   <v-flex xs12>
-                    <v-checkbox label="Cultural Event" :error-messages="CulturalErrors" append-icon="group" color="deep-purple lighten-1" v-model="Cultural" @blur="delayTouch($v.Cultural)" @input="delayTouch($v.Cultural)"></v-checkbox>
+                    <v-checkbox label="Cultural Event" :error-messages="CulturalErrors" prepend-icon="group" color="deep-purple lighten-1" v-model="Cultural" @blur="delayTouch($v.Cultural)" @input="delayTouch($v.Cultural)"></v-checkbox>
                   </v-flex>
                   <v-flex xs12>
-                    <v-checkbox label="Technical Event" :error-messages="TechnicalErrors" append-icon="person" color="info" v-model="Technical" @blur="delayTouch($v.Technical)" @input="delayTouch($v.Technical)"></v-checkbox>
+                    <v-checkbox label="Technical Event" :error-messages="TechnicalErrors" prepend-icon="person" color="info" v-model="Technical" @blur="delayTouch($v.Technical)" @input="delayTouch($v.Technical)"></v-checkbox>
                   </v-flex>
                 </v-layout>
               </v-layout>
@@ -303,7 +303,7 @@ export default {
     venueErrors() {
       const errors = [];
       if (!this.$v.venue.$dirty) return errors;
-      !this.$v.venue.required && errors.push("This field is required");
+      !this.$v.venue.required && errors.push("Venue is required");
       if (errors.length > 0) this.error[1] = true;
       else this.error[1] = false;
       return errors;

@@ -4,7 +4,7 @@
     <v-container>
       <form-container ref="formContainer" @requiredAction="register()" :fieldHeader="['R','E','G','I','S','T','E','R']" :errors="error" fieldButton="Register" btnIcon="person_add">
         <div slot="fieldInput">
-          <v-form autocomplete="off">
+          <v-form>
             <v-container grid-list-lg class="elevation-10 logincontainer">
   
               <!-- for username -->
@@ -13,7 +13,7 @@
                   <v-subheader class="fields">Username</v-subheader>
                 </v-flex>
                 <v-flex xs12 md8>
-                  <v-text-field name="username" clearable :error="UsernameAvailable" label="Enter the Username" :error-messages="UsernameErrors" :prepend-icon="username_icon" v-model.lazy="Username" required @blur="resetUsernameIcon(),delayTouch($v.Username,200),validateUser()"
+                  <v-text-field name="username" clearable :success="!error[0]" :error="UsernameAvailable" label="Enter the Username" :error-messages="UsernameErrors" :prepend-icon="username_icon" v-model.lazy="Username" required @blur="resetUsernameIcon(),delayTouch($v.Username),validateUser()"
                     @input="delayTouch($v.Username,500)" @focus="changeUsernameIcon()">
                   </v-text-field>
                 </v-flex>
@@ -25,8 +25,8 @@
                   <v-subheader class="fields">Password</v-subheader>
                 </v-flex>
                 <v-flex xs12 md8 class="pass__field">
-                  <v-text-field name="password" clearable label="Enter the password" hint="At least 8 characters" v-model.lazy="password" min="8" prepend-icon="vpn_key" :append-icon="visibility_icon ? 'visibility' : 'visibility_off'" @click:append="visibility_icon = !visibility_icon"
-                    :type="visibility_icon ? 'text': 'password'" required :error-messages="passwordErrors" @blur="delayTouch($v.password,100),removeKey()" @input="delayTouch($v.password,500)" @focus="moveKey()"></v-text-field>
+                  <v-text-field name="password" clearable  :success="!error[1]" label="Enter the password" hint="At least 8 characters" v-model.lazy="password" min="8" prepend-icon="vpn_key" :append-icon="visibility_icon ? 'visibility' : 'visibility_off'" @click:append="visibility_icon = !visibility_icon"
+                    :type="visibility_icon ? 'text': 'password'" required :error-messages="passwordErrors" @blur="delayTouch($v.password),removeKey()" @input="delayTouch($v.password,500)" @focus="moveKey()"></v-text-field>
                 </v-flex>
               </v-layout>
   
@@ -36,7 +36,7 @@
                   <v-subheader class="fields">Name</v-subheader>
                 </v-flex>
                 <v-flex xs12 md8>
-                  <v-text-field label="Enter the name" clearable :error-messages="nameErrors" :prepend-icon="name_icon" v-model.lazy="name" required @blur="resetNameIcon(),delayTouch($v.name,100)" @input="delayTouch($v.name,500)" @focus="changeNameIcon()">
+                  <v-text-field label="Enter the name" clearable :success="!error[2]" :error-messages="nameErrors" :prepend-icon="name_icon" v-model.lazy="name" required @blur="resetNameIcon(),delayTouch($v.name)" @input="delayTouch($v.name,500)" @focus="changeNameIcon()">
                   </v-text-field>
                 </v-flex>
               </v-layout>
@@ -47,7 +47,7 @@
                   <v-subheader class="fields">E-mail</v-subheader>
                 </v-flex>
                 <v-flex xs12 md8 class="email__field">
-                  <v-text-field name="email" label="Enter the e-mail" clearable :error="EmailAvailable" :error-messages="emailErrors" v-model.lazy="email" :prepend-icon="mail_icon" required @blur="alternateMail(),delayTouch($v.email,200),validateEmail()" @input="delayTouch($v.email,2000)"
+                  <v-text-field name="email" label="Enter the e-mail" clearable :success="!error[3]" :error="EmailAvailable" :error-messages="emailErrors" v-model.lazy="email" :prepend-icon="mail_icon" required @blur="alternateMail(),delayTouch($v.email),validateEmail()" @input="delayTouch($v.email,2000)"
                     @focus="mailBox()">
                   </v-text-field>
                 </v-flex>
@@ -60,10 +60,10 @@
                 </v-flex>
                 <v-layout row wrap>
                   <v-flex xs12>
-                    <v-checkbox label="Society" :error-messages="societyErrors" append-icon="group" color="purple lighten-2" v-model="Society" @blur="delayTouch($v.Society)" @input="delayTouch($v.Society)"></v-checkbox>
+                    <v-checkbox label="Society" :error-messages="societyErrors" prepend-icon="group" color="purple lighten-2" v-model="Society" @blur="delayTouch($v.Society)" @input="delayTouch($v.Society)"></v-checkbox>
                   </v-flex>
                   <v-flex xs12>
-                    <v-checkbox label="Faculty" :error-messages="facultyErrors" append-icon="person" color="green lighten-1" v-model="Faculty" @blur="delayTouch($v.Faculty)" @input="delayTouch($v.Faculty)"></v-checkbox>
+                    <v-checkbox label="Faculty" :error-messages="facultyErrors" prepend-icon="person" color="green lighten-1" v-model="Faculty" @blur="delayTouch($v.Faculty)" @input="delayTouch($v.Faculty)"></v-checkbox>
                   </v-flex>
                 </v-layout>
               </v-layout>
@@ -80,13 +80,13 @@
                   <transition name="soc__category" appear>
                     <v-layout row wrap>
                       <v-flex xs12>
-                        <v-checkbox label="Technical" :error-messages="technicalErrors" append-icon="group" color="deep-purple accent-1" v-model="Technical" @blur="delayTouch($v.Technical)" @input="delayTouch($v.Technical)"></v-checkbox>
+                        <v-checkbox label="Technical" :error-messages="technicalErrors" prepend-icon="group" color="deep-purple accent-1" v-model="Technical" @blur="delayTouch($v.Technical)" @input="delayTouch($v.Technical)"></v-checkbox>
                       </v-flex>
                       <v-flex xs12>
-                        <v-checkbox label="Cultural" :error-messages="culturalErrors" append-icon="person" color="deep-purple lighten-1" v-model="Cultural" @blur="delayTouch($v.Cultural)" @input="delayTouch($v.Cultural)"></v-checkbox>
+                        <v-checkbox label="Cultural" :error-messages="culturalErrors" prepend-icon="person" color="deep-purple lighten-1" v-model="Cultural" @blur="delayTouch($v.Cultural)" @input="delayTouch($v.Cultural)"></v-checkbox>
                       </v-flex>
                       <v-flex xs12>
-                        <v-checkbox label="Techo-Managerial" :error-messages="technoErrors" append-icon="person" color="deep-purple darken-4" v-model="Techno_Managerial" @blur="delayTouch($v.Techno_Managerial)" @input="delayTouch($v.Techno_Managerial)"></v-checkbox>
+                        <v-checkbox label="Techo-Managerial" :error-messages="technoErrors" prepend-icon="person" color="deep-purple darken-4" v-model="Techno_Managerial" @blur="delayTouch($v.Techno_Managerial)" @input="delayTouch($v.Techno_Managerial)"></v-checkbox>
                       </v-flex>
                     </v-layout>
                   </transition>
@@ -101,10 +101,10 @@
                   <transition name="soc__category" appear>
                     <v-layout row wrap>
                       <v-flex xs12>
-                        <v-checkbox label="Approving Faculty" :error-messages="approvingErrors" append-icon="supervisor_account" color="cyan lighten-2" v-model="ApprovingFaculty" @blur="delayTouch($v.ApprovingFaculty)" @input="delayTouch($v.ApprovingFaculty)"></v-checkbox>
+                        <v-checkbox label="Approving Faculty" :error-messages="approvingErrors" prepend-icon="supervisor_account" color="cyan lighten-2" v-model="ApprovingFaculty" @blur="delayTouch($v.ApprovingFaculty)" @input="delayTouch($v.ApprovingFaculty)"></v-checkbox>
                       </v-flex>
                       <v-flex xs12>
-                        <v-checkbox label="Managing Faculty" :error-messages="managingErrors" append-icon="supervisor_account" color="teal lighten-2" v-model="ManagingFaculty" @blur="delayTouch($v.ManagingFaculty)" @input="delayTouch($v.ManagingFaculty)"></v-checkbox>
+                        <v-checkbox label="Managing Faculty" :error-messages="managingErrors" prepend-icon="supervisor_account" color="teal lighten-2" v-model="ManagingFaculty" @blur="delayTouch($v.ManagingFaculty)" @input="delayTouch($v.ManagingFaculty)"></v-checkbox>
                       </v-flex>
                     </v-layout>
                   </transition>
@@ -120,7 +120,7 @@
                       <v-subheader class="fields">Managing Faculty</v-subheader>
                     </v-flex>
                     <v-flex xs12 md8>
-                      <v-select :items="Managing_Faculty_Array" v-model="Man_Faculty" item-text="username" item-value="_id" label="Select Managing Faculty for the society" autocomplete required :error-messages="manageselectErrors" @blur="delayTouch($v.Man_Faculty,100)" @input="delayTouch($v.Man_Faculty,500)"></v-select>
+                      <v-autocomplete prepend-icon="record_voice_over" :items="Managing_Faculty_Array" v-model="Man_Faculty" item-text="username" item-value="_id" label="Select Managing Faculty for the society" required :error-messages="manageselectErrors" @blur="delayTouch($v.Man_Faculty,100)" @input="delayTouch($v.Man_Faculty,500)"></v-autocomplete>
                     </v-flex>
                   </v-layout>
                   <v-layout>
@@ -128,8 +128,7 @@
                       <v-subheader class="fields"><span>Approving Faculty</span><span v-if="Techno_Managerial">(Cultural)</span></v-subheader>
                     </v-flex>
                     <v-flex xs12 md8>
-                      <v-select :items="Approving_Faculty_Array" v-model="App_Faculty" item-text="username" item-value="_id" label="Select Approving Faculty for the society" autocomplete required :error-messages="approveselectErrors" @blur="delayTouch($v.App_Faculty,100)"
-                        @input="delayTouch($v.App_Faculty,500)"></v-select>
+                      <v-autocomplete prepend-icon="record_voice_over"  :items="Approving_Faculty_Array" v-model="App_Faculty" item-text="username" item-value="_id" label="Select Approving Faculty for the society"  required :error-messages="approveselectErrors" @blur="delayTouch($v.App_Faculty,100)" @input="delayTouch($v.App_Faculty,500)"></v-autocomplete>
                     </v-flex>
                   </v-layout>
   
@@ -139,8 +138,8 @@
                         <v-subheader class="fields ">Approving Faculty(Techinal)</v-subheader>
                       </v-flex>
                       <v-flex xs12 md8>
-                        <v-select :items="Approving_Faculty_Array" v-model="Tech_App_Faculty" item-text="username" item-value="_id" label="Select Approving Faculty for the society" autocomplete required :error-messages="techapproveselectErrors" @blur="delayTouch($v.Tech_App_Faculty,100)"
-                          @input="delayTouch($v.Tech_App_Faculty,500)"></v-select>
+                        <v-autocomplete prepend-icon="record_voice_over"  :items="Approving_Faculty_Array" v-model="Tech_App_Faculty" item-text="username" item-value="_id" label="Select Approving Faculty for the society" required :error-messages="techapproveselectErrors" @blur="delayTouch($v.Tech_App_Faculty,100)"
+                          @input="delayTouch($v.Tech_App_Faculty,500)"></v-autocomplete>
                       </v-flex>
                     </v-layout>
                   </transition>
@@ -618,7 +617,7 @@ export default {
       }
     },
     moveKey: function() {
-      let el = document.querySelector(".pass__field > div > div > i");
+      let el = document.querySelector(".pass__field > div > div >div> i");
       let key = [
         {
           transform: "rotateX(-70deg) translateX(0px)"
@@ -654,6 +653,9 @@ export default {
           const response = await AdminRequest.ValidateUsername({
             params: { username: this.Username }
           });
+
+          this.error[0]= false;
+                this.UsernameAvailable = false;
         } catch (err) {
           if (err) {
             if (err.response != undefined) {
@@ -676,6 +678,8 @@ export default {
           const response = await AdminRequest.ValidateEmail({
             params: { email: this.email }
           });
+          this.error[3] = false
+                    this.EmailAvailable = false;
         } catch (err) {
           if (err) {
             if (err.response != undefined) {

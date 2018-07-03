@@ -19,7 +19,8 @@ import {
   VForm,
   VMenu,
   VCheckbox,
-  VDialog
+  VDialog,
+  VAutocomplete
 } from 'vuetify'
 import '../node_modules/vuetify/src/stylus/app.styl'
 import {
@@ -48,7 +49,8 @@ Vue.use(Vuetify, {
     VForm,
     VMenu,
     VCheckbox,
-    VDialog
+    VDialog,
+    VAutocomplete
   },
   directives: {
     Ripple

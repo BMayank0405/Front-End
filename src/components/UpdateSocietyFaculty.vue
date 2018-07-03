@@ -2,7 +2,7 @@
   <v-app>
     <navbar></navbar>
     <v-container>
-      <form-container ref="formContainer" @requiredAction="register()" :fieldHeader="['U','P','D','A','T','E']" :errors="error" fieldButton="Register" btnIcon="person_add">
+      <form-container ref="formContainer" @requiredAction="update()" :fieldHeader="['U','P','D','A','T','E']" :errors="error" fieldButton="Update" btnIcon="person_add">
         <div slot="fieldInput">
           <v-form autocomplete="off">
             <v-container grid-list-lg class="elevation-10 logincontainer">
@@ -13,7 +13,7 @@
                   <v-subheader class="fields">Select User</v-subheader>
                 </v-flex>
                 <v-flex xs12 md8>
-                  <v-select :items="users" v-model="userid" item-text="username" item-value="_id" label="Select User" autocomplete prepend-icon="account_circle" @blur="getUser()"></v-select>
+                  <v-autocomplete :items="users" v-model="userid" item-text="username" item-value="_id" label="Select User" required autocomplete prepend-icon="account_circle" @blur="getUser()"></v-autocomplete>
                 </v-flex>
               </v-layout>
   
@@ -25,7 +25,8 @@
                     <v-subheader class="fields">Username</v-subheader>
                   </v-flex>
                   <v-flex xs12 md8>
-                    <v-text-field name="username" clearable :error="UsernameAvailable" label="Enter the Username" :error-messages="UsernameErrors" prepend-icon="account_circle" v-model.lazy="Username" required @blur="delayTouch($v.Username,200),validateUser()" @input="delayTouch($v.Username,500)">
+                    <v-text-field name="username" clearable :success="!error[0]" :error="UsernameAvailable" label="Enter the Username" :error-messages="UsernameErrors" prepend-icon="account_circle" v-model.lazy="Username" required @blur="delayTouch($v.Username,200),validateUser()"
+                      @input="delayTouch($v.Username,500)">
                     </v-text-field>
                   </v-flex>
                 </v-layout>
@@ -36,7 +37,7 @@
                     <v-subheader class="fields">Name</v-subheader>
                   </v-flex>
                   <v-flex xs12 md8>
-                    <v-text-field label="Enter the name" :success="true" clearable :error-messages="nameErrors" prepend-icon="sentiment_satisfied" v-model.lazy="name" required @blur="delayTouch($v.name,100)" @input="delayTouch($v.name,500)">
+                    <v-text-field label="Enter the name" :success="!error[1]" clearable :error-messages="nameErrors" prepend-icon="sentiment_satisfied" v-model.lazy="name" required @blur="delayTouch($v.name,100)" @input="delayTouch($v.name,500)">
                     </v-text-field>
                   </v-flex>
                 </v-layout>
@@ -47,15 +48,15 @@
                     <v-subheader class="fields">E-mail</v-subheader>
                   </v-flex>
                   <v-flex xs12 md8 class="email__field">
-                    <v-text-field name="email" label="Enter the e-mail" clearable  :error="EmailAvailable" :error-messages="emailErrors" v-model.lazy="email" prepend-icon="alternate_email" required @blur="delayTouch($v.email,200),validateEmail()" @input="delayTouch($v.email,2000)">
+                    <v-text-field name="email" label="Enter the e-mail" clearable :success="!error[2]" :error="EmailAvailable" :error-messages="emailErrors" v-model.lazy="email" prepend-icon="alternate_email" required @blur="delayTouch($v.email,200),validateEmail()" @input="delayTouch($v.email,2000)">
                     </v-text-field>
                   </v-flex>
                 </v-layout>
   
   
-                <v-container v-if="user.flag == 0 || user.flag == 1 || user.flag == 2" key="society">
+                <div v-if="flag == 0 || flag == 1 || flag == 2" key="society">
   
-                  <v-layout>
+                  <v-layout row>
   
                     <v-flex class="hidden-sm-and-down" md4>
                       <v-subheader class="fields">Category</v-subheader>
@@ -63,13 +64,13 @@
   
                     <v-layout row wrap>
                       <v-flex xs12>
-                        <v-checkbox label="Technical" :error-messages="technicalErrors" append-icon="group" color="deep-purple accent-1" v-model="Technical" @blur="delayTouch($v.Technical)" @input="delayTouch($v.Technical)"></v-checkbox>
+                        <v-checkbox label="Technical" :error-messages="technicalErrors" prepend-icon="group" color="deep-purple accent-1" v-model="Technical" @blur="delayTouch($v.Technical)" @input="delayTouch($v.Technical)"></v-checkbox>
                       </v-flex>
                       <v-flex xs12>
-                        <v-checkbox label="Cultural" :error-messages="culturalErrors" append-icon="person" color="deep-purple lighten-1" v-model="Cultural" @blur="delayTouch($v.Cultural)" @input="delayTouch($v.Cultural)"></v-checkbox>
+                        <v-checkbox label="Cultural" :error-messages="culturalErrors" prepend-icon="person" color="deep-purple lighten-1" v-model="Cultural" @blur="delayTouch($v.Cultural)" @input="delayTouch($v.Cultural)"></v-checkbox>
                       </v-flex>
                       <v-flex xs12>
-                        <v-checkbox label="Techo-Managerial" :error-messages="technoErrors" append-icon="person" color="deep-purple darken-4" v-model="Techno_Managerial" @blur="delayTouch($v.Techno_Managerial)" @input="delayTouch($v.Techno_Managerial)"></v-checkbox>
+                        <v-checkbox label="Techo-Managerial" :error-messages="technoErrors" prepend-icon="person" color="deep-purple darken-4" v-model="Techno_Managerial" @blur="delayTouch($v.Techno_Managerial)" @input="delayTouch($v.Techno_Managerial)"></v-checkbox>
                       </v-flex>
                     </v-layout>
                   </v-layout>
@@ -79,55 +80,55 @@
                       <v-subheader class="fields">Managing Faculty</v-subheader>
                     </v-flex>
                     <v-flex xs12 md8>
-                      <v-select :items="Managing_Faculty_Array" v-model="Man_Faculty" item-text="username" item-value="_id" label="Select Managing Faculty for the society" autocomplete required :error-messages="manageselectErrors" @blur="delayTouch($v.Man_Faculty,100)" @input="delayTouch($v.Man_Faculty,500)"></v-select>
+                      <v-autocomplete prepend-icon="record_voice_over"  :items="Managing_Faculty_Array" v-model="Man_Faculty" item-text="username" item-value="_id" label="Select Managing Faculty for the society" autocomplete required :error-messages="manageselectErrors" @blur="delayTouch($v.Man_Faculty,100)" @input="delayTouch($v.Man_Faculty,500)"></v-autocomplete>
                     </v-flex>
                   </v-layout>
   
                   <v-layout>
                     <v-flex class="hidden-sm-and-down" md4>
-                      <v-subheader class="fields"><span>Approving Faculty</span><span v-if="user.flag == 2">(Cultural)</span></v-subheader>
+                      <v-subheader class="fields"><span>Approving Faculty</span><span v-if="flag == 2">(Cultural)</span></v-subheader>
                     </v-flex>
                     <v-flex xs12 md8>
-                      <v-select :items="Approving_Faculty_Array" v-model="App_Faculty" item-text="username" item-value="_id" label="Select Approving Faculty for the society" autocomplete required :error-messages="approveselectErrors"
-                        @blur="delayTouch($v.App_Faculty,100)" @input="delayTouch($v.App_Faculty,500)"></v-select>
+                      <v-autocomplete prepend-icon="record_voice_over" :items="Approving_Faculty_Array" v-model="App_Faculty" item-text="username" item-value="_id" label="Select Approving Faculty for the society" autocomplete required :error-messages="approveselectErrors" @blur="delayTouch($v.App_Faculty,100)"
+                        @input="delayTouch($v.App_Faculty,500)"></v-autocomplete>
                     </v-flex>
                   </v-layout>
   
-                  <v-layout v-if="user.flag == 2">
+                  <v-layout v-if="flag == 2">
                     <v-flex class="hidden-sm-and-down" md4>
                       <v-subheader class="fields ">Approving Faculty(Techinal)</v-subheader>
                     </v-flex>
                     <v-flex xs12 md8>
-                      <v-select :items="Approving_Faculty_Array" v-model="Tech_App_Faculty" item-text="username" item-value="_id" label="Select Approving Faculty for the society" autocomplete required :error-messages="techapproveselectErrors" @blur="delayTouch($v.Tech_App_Faculty,100)"
-                        @input="delayTouch($v.Tech_App_Faculty,500)"></v-select>
+                      <v-autocomplete prepend-icon="record_voice_over" :items="Approving_Faculty_Array" v-model="Tech_App_Faculty" item-text="username" item-value="_id" label="Select Approving Faculty for the society" autocomplete required :error-messages="techapproveselectErrors" @blur="delayTouch($v.Tech_App_Faculty,100)"
+                        @input="delayTouch($v.Tech_App_Faculty,500)"></v-autocomplete>
                     </v-flex>
                   </v-layout>
   
   
-                </v-container>
+                </div>
   
-                <v-container v-else-if="user.flag == 3 || user.flag == 4" key="faculty">
+                <div v-else-if="flag == 3 || flag == 4" key="faculty">
                   <v-layout>
                     <v-flex class="hidden-sm-and-down" md4>
                       <v-subheader class="fields">Change Type</v-subheader>
                     </v-flex>
                     <v-layout row wrap md8>
                       <v-flex xs12>
-                        <v-checkbox label="Approving Faculty" :error-messages="approvingErrors" append-icon="supervisor_account" color="cyan lighten-2" v-model="ApprovingFaculty" @blur="delayTouch($v.ApprovingFaculty)" @input="delayTouch($v.ApprovingFaculty)"></v-checkbox>
+                        <v-checkbox label="Approving Faculty" :error-messages="approvingErrors" prepend-icon="supervisor_account" color="cyan lighten-2" v-model="ApprovingFaculty" @blur="delayTouch($v.ApprovingFaculty)" @input="delayTouch($v.ApprovingFaculty)"></v-checkbox>
                       </v-flex>
                       <v-flex xs12>
-                        <v-checkbox label="Managing Faculty" :error-messages="managingErrors" append-icon="supervisor_account" color="teal lighten-2" v-model="ManagingFaculty" @blur="delayTouch($v.ManagingFaculty)" @input="delayTouch($v.ManagingFaculty)"></v-checkbox>
+                        <v-checkbox label="Managing Faculty" :error-messages="managingErrors" prepend-icon="supervisor_account" color="teal lighten-2" v-model="ManagingFaculty" @blur="delayTouch($v.ManagingFaculty)" @input="delayTouch($v.ManagingFaculty)"></v-checkbox>
                       </v-flex>
                     </v-layout>
                   </v-layout>
+                </div>
   
-                  <v-dialog v-model="replace" max-width="500">
-                    <generic-response :message="response" :header="dialogHeader" :icon="dialogIcon" @clicked="resp = false"></generic-response>
-                  </v-dialog>
-                </v-container>
+  
               </transition-group>
   
-  
+              <v-dialog v-model="replace" max-width="500">
+                <generic-response :message="response" :header="dialogHeader" :icon="dialogIcon" @clicked="resp = false"></generic-response>
+              </v-dialog>
   
             </v-container>
           </v-form>
@@ -213,7 +214,7 @@ export default {
       ManagingFaculty: false,
 
       //error
-      error: [true, true, true, true, true, true, true, true, true],
+      error: [false, false, false, false, false, false],
 
       //heads
       heads: [],
@@ -233,7 +234,75 @@ export default {
       facultyId: []
     };
   },
+  watch: {
+    Cultural: async function() {
+      if (this.Cultural == true) {
+        this.Technical = false;
+        this.Techno_Managerial = false;
+        this.flag = 0;
+      }
+    },
+    Technical: async function() {
+      if (this.Technical == true) {
+        this.Cultural = false;
+        this.Techno_Managerial = false;
+        this.flag = 1;
+      }
+    },
+    Techno_Managerial: async function() {
+      if (this.Techno_Managerial == true) {
+        this.Cultural = false;
+        this.Technical = false;
+        this.flag = 2;
+      }
+    },
+    ApprovingFaculty: async function() {
+      if (this.ApprovingFaculty == true) {
+        this.ManagingFaculty = false;
+        this.flag = 4;
+      }
+    },
+    ManagingFaculty: async function() {
+      if (this.ManagingFaculty == true) {
+        this.ApprovingFaculty = false;
+        this.flag = 3;
+      }
+    }
+  },
   methods: {
+    update: async function() {
+      let sendObj = {};
+      let society = [0, 1, 2];
+      let fac = [3, 4];
+      if (this.user.flag != this.flag) sendObj.flag = this.flag;
+      if (this.user.username != this.Username) sendObj.username = this.Username;
+      if (this.user.name != this.name) sendObj.name = this.name;
+      if (this.user.email != this.email) sendObj.email = this.email;
+      if (society.includes(this.user.flag)) {
+        if (this.user.facultyId != this.Man_Faculty)
+          sendObj.facultyId = this.Man_Faculty;
+        if (this.flag == 0) {
+          if (this.user.headId.cultural != this.App_Faculty) {
+            sendObj.headId = {};
+            sendObj.headId.cultural = this.App_Faculty;
+          }
+        } else if (this.flag == 1) {
+          if (this.user.headId.technical != this.App_Faculty) {
+            sendObj.headId = {};
+            sendObj.headId.technical = this.App_Faculty;
+          }
+        } else {
+          if (
+            this.user.headId.cultural != this.App_Faculty ||
+            this.user.headId.technical != this.Tech_App_Faculty
+          ) {
+            sendObj.headId = {};
+            sendObj.headId.cultural = this.App_Faculty;
+            sendObj.headId.technical = this.Tech_App_Faculty;
+          }
+        }
+      }
+    },
     getUser: debounce(async function() {
       if (this.userid != this.previousUserId) {
         if (sessionStorage.getItem(this.userid) === null) {
@@ -245,6 +314,7 @@ export default {
             });
             this.previousUserId = this.userid;
             this.user = response.data.user;
+
             sessionStorage.setItem(this.userid, JSON.stringify(this.user));
           } catch (err) {
             if (err) console.log(err);
@@ -257,10 +327,26 @@ export default {
         this.Username = this.user.username;
         this.email = this.user.email;
         this.name = this.user.name;
-        if (society.includes(this.user.flag)) {
-          // society
+        this.flag = this.user.flag;
+        if (society.includes(this.flag)) {
+          this.Man_Faculty = this.user.facultyId;
+          if (this.user.flag == 0) {
+            this.Cultural = true;
+            this.App_Faculty = this.user.headId.cultural;
+          } else if (this.flag == 1) {
+            this.Technical = true;
+            this.App_Faculty = this.user.headId.technical;
+          } else {
+            this.Techno_Managerial = true;
+            this.App_Faculty = this.user.headId.cultural;
+            this.Tech_App_Faculty = this.user.headId.technical;
+          }
         } else {
-          //faculty
+          if (this.flag == 3) {
+            this.ManagingFaculty = true;
+          } else {
+            this.ApprovingFaculty = true;
+          }
         }
       }
     }, 1000),
@@ -292,7 +378,9 @@ export default {
       if (this.error[3] == false) {
         try {
           const response = await AdminRequest.ValidateEmail({
-            params: { email: this.email }
+            params: {
+              email: this.email
+            }
           });
         } catch (err) {
           if (err) {
@@ -321,7 +409,7 @@ export default {
     Username: {
       required,
       alphaNum,
-      minLength: minLength(5),
+      minLength: minLength(3),
       maxLength: maxLength(30)
     },
     name: {
