@@ -592,6 +592,10 @@ export default {
         }
         try {
           const response = await AdminRequest.register(newUser);
+          this.dialogIcon = "Congrats";
+          this.dialogHeader = "thumbs_up";
+          this.response = "New User has been registered";
+          this.resp = true;
         } catch (err) {
           if (err) {
             if (err.response == undefined) {
@@ -654,8 +658,8 @@ export default {
             params: { username: this.Username }
           });
 
-          this.error[0]= false;
-                this.UsernameAvailable = false;
+          this.error[0] = false;
+          this.UsernameAvailable = false;
         } catch (err) {
           if (err) {
             if (err.response != undefined) {
@@ -678,8 +682,8 @@ export default {
           const response = await AdminRequest.ValidateEmail({
             params: { email: this.email }
           });
-          this.error[3] = false
-                    this.EmailAvailable = false;
+          this.error[3] = false;
+          this.EmailAvailable = false;
         } catch (err) {
           if (err) {
             if (err.response != undefined) {

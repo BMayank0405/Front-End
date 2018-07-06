@@ -80,7 +80,8 @@
                       <v-subheader class="fields">Managing Faculty</v-subheader>
                     </v-flex>
                     <v-flex xs12 md8>
-                      <v-autocomplete prepend-icon="record_voice_over"  :items="Managing_Faculty_Array" v-model="Man_Faculty" item-text="username" item-value="_id" label="Select Managing Faculty for the society" autocomplete required :error-messages="manageselectErrors" @blur="delayTouch($v.Man_Faculty,100)" @input="delayTouch($v.Man_Faculty,500)"></v-autocomplete>
+                      <v-autocomplete prepend-icon="record_voice_over" :items="Managing_Faculty_Array" v-model="Man_Faculty" item-text="username" item-value="_id" label="Select Managing Faculty for the society" autocomplete required :error-messages="manageselectErrors" @blur="delayTouch($v.Man_Faculty,100)"
+                        @input="delayTouch($v.Man_Faculty,500)"></v-autocomplete>
                     </v-flex>
                   </v-layout>
   
@@ -89,8 +90,8 @@
                       <v-subheader class="fields"><span>Approving Faculty</span><span v-if="flag == 2">(Cultural)</span></v-subheader>
                     </v-flex>
                     <v-flex xs12 md8>
-                      <v-autocomplete prepend-icon="record_voice_over" :items="Approving_Faculty_Array" v-model="App_Faculty" item-text="username" item-value="_id" label="Select Approving Faculty for the society" autocomplete required :error-messages="approveselectErrors" @blur="delayTouch($v.App_Faculty,100)"
-                        @input="delayTouch($v.App_Faculty,500)"></v-autocomplete>
+                      <v-autocomplete prepend-icon="record_voice_over" :items="Approving_Faculty_Array" v-model="App_Faculty" item-text="username" item-value="_id" label="Select Approving Faculty for the society" autocomplete required :error-messages="approveselectErrors"
+                        @blur="delayTouch($v.App_Faculty,100)" @input="delayTouch($v.App_Faculty,500)"></v-autocomplete>
                     </v-flex>
                   </v-layout>
   
@@ -99,8 +100,8 @@
                       <v-subheader class="fields ">Approving Faculty(Techinal)</v-subheader>
                     </v-flex>
                     <v-flex xs12 md8>
-                      <v-autocomplete prepend-icon="record_voice_over" :items="Approving_Faculty_Array" v-model="Tech_App_Faculty" item-text="username" item-value="_id" label="Select Approving Faculty for the society" autocomplete required :error-messages="techapproveselectErrors" @blur="delayTouch($v.Tech_App_Faculty,100)"
-                        @input="delayTouch($v.Tech_App_Faculty,500)"></v-autocomplete>
+                      <v-autocomplete prepend-icon="record_voice_over" :items="Approving_Faculty_Array" v-model="Tech_App_Faculty" item-text="username" item-value="_id" label="Select Approving Faculty for the society" autocomplete required :error-messages="techapproveselectErrors"
+                        @blur="delayTouch($v.Tech_App_Faculty,100)" @input="delayTouch($v.Tech_App_Faculty,500)"></v-autocomplete>
                     </v-flex>
                   </v-layout>
   
@@ -122,21 +123,42 @@
                     </v-layout>
                   </v-layout>
                 </div>
+                <div v-if="user.flag != flag" key="facultychange">
+                  <div v-if="user.flag == 3">
+                    <v-layout>
+                      <v-flex class="hidden-sm-and-down" md4>
+                        <v-subheader class="fields">Replace with</v-subheader>
+                      </v-flex>
+                      <v-flex xs12 md8>
+                        <v-autocomplete prepend-icon="record_voice_over" :items="Managing_Faculty_Array" v-model="Man_Replace" item-text="username" item-value="_id" label="Select Managing Faculty" autocomplete required :error-messages="manageselectErrors" @blur="delayTouch($v.Man_Faculty,100)"
+                          @input="delayTouch($v.Man_Faculty,500)"></v-autocomplete>
+                      </v-flex>
+                    </v-layout>
+                  </div>
+                  <div v-else>
+                  <v-layout>
+                    <v-flex class="hidden-sm-and-down" md4>
+                      <v-subheader class="fields">Approving Faculty</v-subheader>
+                    </v-flex>
+                    <v-flex xs12 md8>
+                      <v-autocomplete prepend-icon="record_voice_over" :items="Approving_Faculty_Array" v-model="App_Replace" item-text="username" item-value="_id" label="Select Approving Faculty for the society" autocomplete required :error-messages="approveselectErrors"
+                        @blur="delayTouch($v.App_Faculty,100)" @input="delayTouch($v.App_Faculty,500)"></v-autocomplete>
+                    </v-flex>
+                  </v-layout>
+                  </div>
+  
+                </div>
   
   
               </transition-group>
-  
-              <v-dialog v-model="replace" max-width="500">
-                <generic-response :message="response" :header="dialogHeader" :icon="dialogIcon" @clicked="resp = false"></generic-response>
-              </v-dialog>
   
             </v-container>
           </v-form>
         </div>
       </form-container>
   
-      <v-dialog v-model="resp" max-width="500">
-        <generic-response :message="response" :header="dialogHeader" :icon="dialogIcon" @clicked="resp = false"></generic-response>
+      <v-dialog v-model="resp" max-width="500" @input="reload()">
+        <generic-response :message="response" :header="dialogHeader" :icon="dialogIcon" @clicked="reload()"></generic-response>
       </v-dialog>
     </v-container>
   </v-app>
@@ -161,7 +183,6 @@ import AdminRequest from "@/services/AdminRequest";
 import CommonRequest from "@/services/CommonRequest";
 
 const GenericResponse = () => import("./Dialogs/GenericResponse");
-const FacultyReplace = () => import("./Dialogs/FacultyReplace");
 
 const touchMap = new WeakMap();
 export default {
@@ -231,13 +252,16 @@ export default {
       replace: false,
 
       headId: [],
-      facultyId: []
+      facultyId: [],
+      Man_Replace: "",
+      App_Replace: ""
     };
   },
   watch: {
     Cultural: async function() {
       if (this.Cultural == true) {
         this.Technical = false;
+        this.Tech_App_Faculty = "";
         this.Techno_Managerial = false;
         this.flag = 0;
       }
@@ -245,6 +269,7 @@ export default {
     Technical: async function() {
       if (this.Technical == true) {
         this.Cultural = false;
+        this.Tech_App_Faculty = "";
         this.Techno_Managerial = false;
         this.flag = 1;
       }
@@ -270,6 +295,10 @@ export default {
     }
   },
   methods: {
+    reload: function() {
+      this.resp = false;
+      location.reload();
+    },
     update: async function() {
       let sendObj = {};
       let society = [0, 1, 2];
@@ -281,26 +310,119 @@ export default {
       if (society.includes(this.user.flag)) {
         if (this.user.facultyId != this.Man_Faculty)
           sendObj.facultyId = this.Man_Faculty;
-        if (this.flag == 0) {
-          if (this.user.headId.cultural != this.App_Faculty) {
-            sendObj.headId = {};
-            sendObj.headId.cultural = this.App_Faculty;
-          }
-        } else if (this.flag == 1) {
-          if (this.user.headId.technical != this.App_Faculty) {
-            sendObj.headId = {};
-            sendObj.headId.technical = this.App_Faculty;
+        if (this.user.flag == this.flag) {
+          if (this.flag == 0) {
+            if (this.user.headId.cultural != this.App_Faculty) {
+              sendObj.headId = {};
+              sendObj.headId.cultural = this.App_Faculty;
+            }
+          } else if (this.flag == 1) {
+            if (this.user.headId.technical != this.App_Faculty) {
+              sendObj.headId = {};
+              sendObj.headId.technical = this.App_Faculty;
+            }
+          } else {
+            if (
+              this.user.headId.cultural != this.App_Faculty ||
+              this.user.headId.technical != this.Tech_App_Faculty
+            ) {
+              sendObj.headId = {};
+              sendObj.headId.cultural = this.App_Faculty;
+              sendObj.headId.technical = this.Tech_App_Faculty;
+            }
           }
         } else {
-          if (
-            this.user.headId.cultural != this.App_Faculty ||
-            this.user.headId.technical != this.Tech_App_Faculty
-          ) {
+          if (this.flag == 0) {
+            sendObj.headId = {};
+            sendObj.headId.cultural = this.App_Faculty;
+          } else if (this.flag == 1) {
+            sendObj.headId = {};
+            sendObj.headId.technical = this.App_Faculty;
+          } else {
             sendObj.headId = {};
             sendObj.headId.cultural = this.App_Faculty;
             sendObj.headId.technical = this.Tech_App_Faculty;
           }
         }
+      }
+      if (Object.keys(sendObj).length != 0) {
+        sendObj.id = this.userid;
+        let fac = [3, 4];
+        let result;
+        if (fac.includes(this.flag) && this.user.flag != this.flag) {
+          try {
+            const faculty_replace = await AdminRequest.replaceFaculty({
+              id: sendObj.id,
+              replace: this.replaceFaculty
+            });
+            result = true;
+          } catch (err) {
+            result = false;
+            console.log(err);
+            if (err) {
+              console.log(err);
+              if (err.response == undefined) {
+                this.dialogIcon = "wifi_off";
+                this.dialogHeader = "Offline";
+                this.response = "Please try again later";
+              } else {
+                this.dialogIcon = "add_alert";
+                this.dialogHeader = "Error !";
+                if (err.response.data.error.includes("Unauthorized")) {
+                  this.response = "Your session has expired";
+                } else {
+                  this.response = err.response.data.error.replace(/"/g, "");
+                }
+              }
+            } else {
+              this.dialogIcon = "warning";
+              this.dialogHeader = "Error !";
+              this.response = "Internal Server Error";
+            }
+            this.resp = true;
+          }
+        }
+        if (result) {
+          try {
+            const response = await AdminRequest.updateSocietyFaculty(sendObj);
+
+            this.dialogIcon = "Congrats";
+            this.dialogHeader = "thumbs_up";
+            this.response = "User details have been updated";
+            this.resp = true;
+
+            //clear session storage related to that user
+            sessionStorage.removeItem(this.userid);
+          } catch (err) {
+            console.log(err);
+            if (err) {
+              console.log(err);
+              if (err.response == undefined) {
+                this.dialogIcon = "wifi_off";
+                this.dialogHeader = "Offline";
+                this.response = "Please try again later";
+              } else {
+                this.dialogIcon = "add_alert";
+                this.dialogHeader = "Error !";
+                if (err.response.data.error.includes("Unauthorized")) {
+                  this.response = "Your session has expired";
+                } else {
+                  this.response = err.response.data.error.replace(/"/g, "");
+                }
+              }
+            } else {
+              this.dialogIcon = "warning";
+              this.dialogHeader = "Error !";
+              this.response = "Internal Server Error";
+            }
+            this.resp = true;
+          }
+        }
+      } else {
+        this.dialogIcon = "warning";
+        this.dialogHeader = "Oops !";
+        this.response = "Nothing to update";
+        this.resp = true;
       }
     },
     getUser: debounce(async function() {
@@ -375,7 +497,7 @@ export default {
       }
     }, 500),
     validateEmail: debounce(async function() {
-      if (this.error[3] == false) {
+      if (this.error[2] == false) {
         try {
           const response = await AdminRequest.ValidateEmail({
             params: {
