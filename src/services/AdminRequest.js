@@ -33,8 +33,5 @@ export default {
   },
   getAllUsers() {
     return AxiosAdmin().get("getAllUsers");
-  },
-  replaceFaculty(data){
-    return AxiosAdmin().put("replace-faculty",data);
   }
 };
