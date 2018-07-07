@@ -353,8 +353,7 @@ export default {
           try {
             const faculty_replace = await AdminRequest.replaceFaculty({
               id: sendObj.id,
-              flag: this.user.flag,
-              replace: this.replaceFaculty
+              flag: this.user.flag
             });
             result = true;
           } catch (err) {
