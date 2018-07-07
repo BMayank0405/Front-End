@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <navbar></navbar>
+    <navbar :searchBar="false"></navbar>
     <v-container>
       <form-container ref="formContainer" @requiredAction="updateEvent()" :fieldHeader="['U','P','D','A','T','E',' ','E','V','E' ,'N','T']" :errors="error" fieldButton="Update Event" btnIcon="fiber_new">
         <div slot="fieldInput">

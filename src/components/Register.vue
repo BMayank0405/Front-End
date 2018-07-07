@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <navbar></navbar>
+    <navbar :searchBar="false"></navbar>
     <v-container>
       <form-container ref="formContainer" @requiredAction="register()" :fieldHeader="['R','E','G','I','S','T','E','R']" :errors="error" fieldButton="Register" btnIcon="person_add">
         <div slot="fieldInput">

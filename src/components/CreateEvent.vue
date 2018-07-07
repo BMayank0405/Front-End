@@ -1,6 +1,6 @@
 <template>
   <div>
-    <navbar key="navbar"></navbar>
+    <navbar key="navbar" :searchBar="false"></navbar>
     <v-container key="inputs">
       <form-container @requiredAction="createEvent()" :fieldHeader="['C','R','E','A','T','E',' ','E','V','E' ,'N','T']" fieldButton="Create Event" :errors="error" btnIcon="fiber_new">
         <div slot="fieldInput">
@@ -107,7 +107,7 @@
                   <v-subheader class="fields">Co-ordinator's Name</v-subheader>
                 </v-flex>
                 <v-flex xs12 md8>
-                  <v-text-field label="Enter Co-ordinator's Name" clearable :success="!error[7]"v-model.lazy="coordinatorName" prepend-icon="record_voice_over" required :error-messages="coordinatorNameErrors" @blur="delayTouch($v.coordinatorName,200)" @input="delayTouch($v.coordinatorName,200)">
+                  <v-text-field label="Enter Co-ordinator's Name" clearable :success="!error[7]" v-model.lazy="coordinatorName" prepend-icon="record_voice_over" required :error-messages="coordinatorNameErrors" @blur="delayTouch($v.coordinatorName,200)" @input="delayTouch($v.coordinatorName,200)">
                   </v-text-field>
                 </v-flex>
               </v-layout>

@@ -85,7 +85,7 @@ export default {
     };
   },
   created: async function() {
-    if (!this.$store.state.isloggedIn || this.searchBar) {
+    if (this.searchBar) {
       const response = await HeaderlessRequest.getSocieties();
 
       this.societies = response.data.user;

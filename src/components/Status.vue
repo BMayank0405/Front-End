@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <navbar></navbar>
+    <navbar :searchBar="false"></navbar>
     <v-container class="centering" grid-list-lg>
   
       <!-- accepted events -->

@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <navbar></navbar>
+    <navbar :searchBar="false"></navbar>
     <v-container class="elevation-20" grid-list-lg>
       <v-layout row wrap align-center style="min-height:80vh">
   
@@ -50,9 +50,9 @@ export default {
           to: "/UpdateSocietyFaculty"
         },
         {
-          name: "Remove Society",
+          name: "Remove Society/Faculty",
           icon: "voice_over_off",
-          to: "/UpdateSocietyFaculty"
+          to: "/removeSocietyFaculty"
         }
       ]
     };

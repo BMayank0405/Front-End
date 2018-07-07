@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <navbar></navbar>
+    <navbar :searchBar="false"></navbar>
     <v-container>
       <form-container ref="formContainer" @requiredAction="update()" :fieldHeader="['U','P','D','A','T','E']" :errors="error" fieldButton="Update" btnIcon="person_add">
         <div slot="fieldInput">
@@ -177,8 +177,8 @@ import {
 } from "vuelidate/lib/validators";
 
 import { debounce } from "lodash";
-import FormContainer from "./FieldComponents/FormContainer.vue";
-import Navbar from "./Navbar.vue";
+const Navbar = () => import("./Navbar");
+const FormContainer = () => import("./FieldComponents/FormContainer.vue");
 import AdminRequest from "@/services/AdminRequest";
 import CommonRequest from "@/services/CommonRequest";
 
@@ -213,7 +213,7 @@ export default {
       if (err) console.log(err);
     }
   },
-  data() {
+  data: function() {
     return {
       //common data
       user: {},
@@ -350,10 +350,15 @@ export default {
         let fac = [3, 4];
         let result;
         if (fac.includes(this.flag) && this.user.flag != this.flag) {
+          let replace;
+          if (this.user.flag == 3) {
+            replace = this.Man_Replace;
+          } else replace = this.App_Replace;
           try {
             const faculty_replace = await AdminRequest.replaceFaculty({
               id: sendObj.id,
-              flag: this.user.flag
+              flag: this.user.flag,
+              replace
             });
             result = true;
           } catch (err) {
@@ -721,7 +726,7 @@ export default {
       if (errors.length > 0) this.error[7] = true;
       else this.error[7] = false;
       return errors;
-    },
+    }
   }
 };
 </script>

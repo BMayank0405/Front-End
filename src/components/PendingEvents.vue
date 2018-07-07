@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <navbar></navbar>
+    <navbar :searchBar="false"></navbar>
     <v-container class="centering" grid-list-lg>
       <v-layout ref="pendingback" row wrap justify-space-around>
         <transition-group name="cell" tag="div" class="event__card">
