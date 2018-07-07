@@ -130,8 +130,8 @@
                         <v-subheader class="fields">Replace with</v-subheader>
                       </v-flex>
                       <v-flex xs12 md8>
-                        <v-autocomplete prepend-icon="record_voice_over" :items="Managing_Faculty_Array" v-model="Man_Replace" item-text="username" item-value="_id" label="Select Managing Faculty" autocomplete required :error-messages="manageselectErrors" @blur="delayTouch($v.Man_Faculty,100)"
-                          @input="delayTouch($v.Man_Faculty,500)"></v-autocomplete>
+                        <v-autocomplete prepend-icon="record_voice_over" :items="Managing_Faculty_Array" v-model="Man_Replace" item-text="username" item-value="_id" label="Select Managing Faculty" autocomplete required :error-messages="managereplaceErrors" @blur="delayTouch($v.Man_Replace,100)"
+                          @input="delayTouch($v.Man_Replace,500)"></v-autocomplete>
                       </v-flex>
                     </v-layout>
                   </div>
@@ -141,8 +141,8 @@
                       <v-subheader class="fields">Approving Faculty</v-subheader>
                     </v-flex>
                     <v-flex xs12 md8>
-                      <v-autocomplete prepend-icon="record_voice_over" :items="Approving_Faculty_Array" v-model="App_Replace" item-text="username" item-value="_id" label="Select Approving Faculty for the society" autocomplete required :error-messages="approveselectErrors"
-                        @blur="delayTouch($v.App_Faculty,100)" @input="delayTouch($v.App_Faculty,500)"></v-autocomplete>
+                      <v-autocomplete prepend-icon="record_voice_over" :items="Approving_Faculty_Array" v-model="App_Replace" item-text="username" item-value="_id" label="Select Approving Faculty for the society" autocomplete required :error-messages="approvereplaceErrors"
+                        @blur="delayTouch($v.App_Replace,100)" @input="delayTouch($v.App_Replace,500)"></v-autocomplete>
                     </v-flex>
                   </v-layout>
                   </div>
@@ -353,6 +353,7 @@ export default {
           try {
             const faculty_replace = await AdminRequest.replaceFaculty({
               id: sendObj.id,
+              flag: this.user.flag,
               replace: this.replaceFaculty
             });
             result = true;
@@ -585,6 +586,12 @@ export default {
       required: requiredIf(function() {
         return this.Techno_Managerial;
       })
+    },
+    Man_Replace: {
+      required
+    },
+    App_Replace: {
+      required
     }
   },
   computed: {
@@ -698,7 +705,24 @@ export default {
       if (errors.length > 0) this.error[8] = true;
       else this.error[8] = false;
       return errors;
-    }
+    },
+
+    managereplaceErrors() {
+      const errors = [];
+      if (!this.$v.Man_Replace.$dirty) return errors;
+      !this.$v.Man_Replace.required && errors.push("This field is required");
+      if (errors.length > 0) this.error[6] = true;
+      else this.error[6] = false;
+      return errors;
+    },
+    approvereplaceErrors() {
+      const errors = [];
+      if (!this.$v.App_Replace.$dirty) return errors;
+      !this.$v.App_Replace.required && errors.push("This field is required");
+      if (errors.length > 0) this.error[7] = true;
+      else this.error[7] = false;
+      return errors;
+    },
   }
 };
 </script>
