@@ -66,6 +66,12 @@ export default new Router({
         import ("@/components/removeSocietyFaculty")
     },
     {
+      path: "/addremoveVenue",
+      name: "AddRemoveVenue",
+      component: () =>
+        import ("@/components/AddRemoveVenue")
+    },
+    {
       path: "/Status",
       name: "Status",
       component: () =>

@@ -351,7 +351,7 @@ export default {
         let result = true;
         if (fac.includes(this.flag) && this.user.flag != this.flag) {
           let replace;
-          result =false; 
+          result = false;
           if (this.user.flag == 3) {
             replace = this.Man_Replace;
           } else replace = this.App_Replace;

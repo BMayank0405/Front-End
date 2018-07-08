@@ -22,6 +22,9 @@ export default {
   addVenue(data) {
     return AxiosAdmin().post("/add-venue", data);
   },
+  removeVenue(data){
+    return AxiosAdmin().put("/remove-venue", data);
+  },
   getHead() {
     return AxiosAdmin().get("get-head");
   },

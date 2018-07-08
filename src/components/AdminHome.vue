@@ -47,7 +47,7 @@ export default {
         {
           name: "Add/Remove Venue",
           icon: "add_location",
-          to: "/UpdateSocietyFaculty"
+          to: "/addremoveVenue"
         },
         {
           name: "Remove Society/Faculty",
