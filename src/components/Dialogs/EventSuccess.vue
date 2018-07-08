@@ -54,11 +54,8 @@
         </v-card-title>
       </v-flex>
   
-      <v-flex sm12 class="center">
-        <svgicon class="loginmale" icon="malecartoonzipped" :original="true"></svgicon>
-      </v-flex>
   
-      <v-layout wrap justify-center pr-2 mt-5 mb-4>
+      <v-layout wrap justify-center pr-2>
         <v-flex sm12 class="center">
           <h2>{{SuccessMessage}}</h2>
         </v-flex>
@@ -88,6 +85,11 @@ export default {
     return {
       small: window.innerWidth < 400
     };
+  },
+  methods: {
+    close: function() {
+      this.$emit("clicked");
+    }
   },
   props: {
     SuccessMessage: {
@@ -239,7 +241,6 @@ use.d16 {
   transform: translate(-50%, -50%);
   height: 100%;
   width: 100%;
-  opacity: 0.8;
 }
 
 @keyframes anim1 {

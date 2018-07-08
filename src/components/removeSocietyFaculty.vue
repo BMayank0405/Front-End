@@ -2,7 +2,7 @@
   <v-app>
     <navbar :searchBar="false"></navbar>
     <v-container>
-      <form-container ref="formContainer" @requiredAction="remove()" :fieldHeader="['R','E','M','O','V','E']" :errors="error" fieldButton="Remove" btnIcon="person_add">
+      <form-container ref="formContainer" @requiredAction="remove()" :fieldHeader="['R','E','M','O','V','E']" :errors="error" fieldButton="Remove" btnIcon="voice_over_off">
         <div slot="fieldInput">
           <v-form autocomplete="off">
             <v-container grid-list-lg class="elevation-10 logincontainer">

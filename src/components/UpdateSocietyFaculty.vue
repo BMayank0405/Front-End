@@ -2,7 +2,7 @@
   <v-app>
     <navbar :searchBar="false"></navbar>
     <v-container>
-      <form-container ref="formContainer" @requiredAction="update()" :fieldHeader="['U','P','D','A','T','E']" :errors="error" fieldButton="Update" btnIcon="person_add">
+      <form-container ref="formContainer" @requiredAction="update()" :fieldHeader="['U','P','D','A','T','E']" :errors="error" fieldButton="Update" btnIcon="beenhere">
         <div slot="fieldInput">
           <v-form autocomplete="off">
             <v-container grid-list-lg class="elevation-10 logincontainer">
@@ -67,10 +67,10 @@
                         <v-checkbox label="Technical" :error-messages="technicalErrors" prepend-icon="group" color="deep-purple accent-1" v-model="Technical" @blur="delayTouch($v.Technical)" @input="delayTouch($v.Technical)"></v-checkbox>
                       </v-flex>
                       <v-flex xs12>
-                        <v-checkbox label="Cultural" :error-messages="culturalErrors" prepend-icon="person" color="deep-purple lighten-1" v-model="Cultural" @blur="delayTouch($v.Cultural)" @input="delayTouch($v.Cultural)"></v-checkbox>
+                        <v-checkbox label="Cultural" :error-messages="culturalErrors" prepend-icon="group" color="deep-purple lighten-1" v-model="Cultural" @blur="delayTouch($v.Cultural)" @input="delayTouch($v.Cultural)"></v-checkbox>
                       </v-flex>
                       <v-flex xs12>
-                        <v-checkbox label="Techo-Managerial" :error-messages="technoErrors" prepend-icon="person" color="deep-purple darken-4" v-model="Techno_Managerial" @blur="delayTouch($v.Techno_Managerial)" @input="delayTouch($v.Techno_Managerial)"></v-checkbox>
+                        <v-checkbox label="Techo-Managerial" :error-messages="technoErrors" prepend-icon="group" color="deep-purple darken-4" v-model="Techno_Managerial" @blur="delayTouch($v.Techno_Managerial)" @input="delayTouch($v.Techno_Managerial)"></v-checkbox>
                       </v-flex>
                     </v-layout>
                   </v-layout>
@@ -115,10 +115,10 @@
                     </v-flex>
                     <v-layout row wrap md8>
                       <v-flex xs12>
-                        <v-checkbox label="Approving Faculty" :error-messages="approvingErrors" prepend-icon="supervisor_account" color="cyan lighten-2" v-model="ApprovingFaculty" @blur="delayTouch($v.ApprovingFaculty)" @input="delayTouch($v.ApprovingFaculty)"></v-checkbox>
+                        <v-checkbox label="Approving Faculty" :error-messages="approvingErrors" prepend-icon="person" color="cyan lighten-2" v-model="ApprovingFaculty" @blur="delayTouch($v.ApprovingFaculty)" @input="delayTouch($v.ApprovingFaculty)"></v-checkbox>
                       </v-flex>
                       <v-flex xs12>
-                        <v-checkbox label="Managing Faculty" :error-messages="managingErrors" prepend-icon="supervisor_account" color="teal lighten-2" v-model="ManagingFaculty" @blur="delayTouch($v.ManagingFaculty)" @input="delayTouch($v.ManagingFaculty)"></v-checkbox>
+                        <v-checkbox label="Managing Faculty" :error-messages="managingErrors" prepend-icon="person" color="teal lighten-2" v-model="ManagingFaculty" @blur="delayTouch($v.ManagingFaculty)" @input="delayTouch($v.ManagingFaculty)"></v-checkbox>
                       </v-flex>
                     </v-layout>
                   </v-layout>
@@ -130,7 +130,7 @@
                         <v-subheader class="fields">Replace with</v-subheader>
                       </v-flex>
                       <v-flex xs12 md8>
-                        <v-autocomplete prepend-icon="record_voice_over" :items="Managing_Faculty_Array" v-model="Man_Replace" item-text="username" item-value="_id" label="Select Managing Faculty" autocomplete required :error-messages="managereplaceErrors" @blur="delayTouch($v.Man_Replace,100)"
+                        <v-autocomplete prepend-icon="person" :items="Managing_Faculty_Array" v-model="Man_Replace" item-text="username" item-value="_id" label="Select Managing Faculty" autocomplete required :error-messages="managereplaceErrors" @blur="delayTouch($v.Man_Replace,100)"
                           @input="delayTouch($v.Man_Replace,500)"></v-autocomplete>
                       </v-flex>
                     </v-layout>
@@ -141,7 +141,7 @@
                       <v-subheader class="fields">Replace with</v-subheader>
                     </v-flex>
                     <v-flex xs12 md8>
-                      <v-autocomplete prepend-icon="record_voice_over" :items="Approving_Faculty_Array" v-model="App_Replace" item-text="username" item-value="_id" label="Select Approving Faculty" autocomplete required :error-messages="approvereplaceErrors"
+                      <v-autocomplete prepend-icon="person" :items="Approving_Faculty_Array" v-model="App_Replace" item-text="username" item-value="_id" label="Select Approving Faculty" autocomplete required :error-messages="approvereplaceErrors"
                         @blur="delayTouch($v.App_Replace,100)" @input="delayTouch($v.App_Replace,500)"></v-autocomplete>
                     </v-flex>
                   </v-layout>

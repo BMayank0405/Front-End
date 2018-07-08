@@ -58,6 +58,10 @@ div {
   }
 }
 
+.center {
+  max-width: 25%;
+  margin-bottom: 20px;
+}
 @keyframes blink-caret {
   50% {
     border-color: transparent;

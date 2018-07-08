@@ -49,10 +49,23 @@
   
         </v-flex>
       </v-layout>
+
+      <v-layout  row wrap justify-space-around v-if = "(rejectedEvents.length == 0) && (acceptedEvents.length == 0)">
+                <page-header>
+          <span slot="pageheader" class="flex-center" style="text-transform:capitalize">Nothing to show</span>
+        </page-header>
+      </v-layout>
   
-      <v-dialog v-model="editmodal" @input="resetOpacity()" lazy persistent max-width="500px">
+      <v-dialog v-model="editmodal" max-width="500px">
         <suggest-edit @clicked="edit"></suggest-edit>
+      </v-dialog>
   
+      <v-dialog v-model="resp" max-width="500">
+        <generic-response :message="response" :header="dialogHeader" :icon="dialogIcon" @clicked="resp = false"></generic-response>
+      </v-dialog>
+  
+      <v-dialog v-model="eventreg" max-width="500">
+        <event-success head="Success" icon="thumb_up" SuccessMessage="Event has been accepted Successfully." @clicked="closing()"></event-success>
       </v-dialog>
     </v-container>
   </v-app>
@@ -71,6 +84,9 @@ const CardButton = () => import("./Card/CardButton");
 const PageHeader = () => import("./Commons/PageHeader.vue");
 const Navbar = () => import("./Navbar");
 const SuggestEdit = () => import("./Dialogs/SuggestEdit.vue");
+const EventSuccess = () => import("./Dialogs/EventSuccess");
+
+const GenericResponse = () => import("./Dialogs/GenericResponse");
 
 export default {
   components: {
@@ -79,7 +95,9 @@ export default {
     "event-card": Card,
     "card-button": CardButton,
     "page-header": PageHeader,
-    "suggest-edit": SuggestEdit
+    "suggest-edit": SuggestEdit,
+    "event-success": EventSuccess,
+    "generic-response": GenericResponse
   },
   data() {
     return {
@@ -87,7 +105,12 @@ export default {
       acceptedEvents: [],
       rejectedEvents: [],
       editmodal: false,
-      editId: null
+      editId: null,
+      eventreg: false,
+      resp: false,
+      response: "",
+      dialogIcon: "",
+      dialogHeader: ""
     };
   },
   beforeCreate: async () => {
@@ -111,14 +134,25 @@ export default {
     }
   },
   methods: {
-    resetOpacity: function() {
-      this.editmodal = false;
-    },
     edit: async function(value) {
-      const response = await FacultyRequest.suggestEdit({
-        id: this.editId,
-        edit: value
-      });
+      try {
+        await FacultyRequest.suggestEdit({
+          id: this.editId,
+          edit: value
+        });
+        this.editmodal = false;
+        this.response = "Event has been successfully put in editing phase";
+        this.dialogIcon = "thumb_up";
+        this.dialogHeader = "Congrats";
+        this.resp = true;
+      } catch (err) {
+        if (err) this.response = err.response.data.replace(/"/g, "");
+        else this.response = "Internal Server Error";
+        this.editmodal = false;
+        this.dialogIcon = "report";
+        this.dialogHeader = "Sorry";
+        this.resp = true;
+      }
     },
     suggestEdit: function(id) {
       this.editId = id;
@@ -126,26 +160,35 @@ export default {
     },
     accept: async function(id) {
       try {
-        const response = await FacultyRequest.historyAccept({
+        await FacultyRequest.historyAccept({
           id: id
         });
-        this.$router.push("/pendingEvents");
-      } catch (err) {}
+        this.eventreg = true;
+      } catch (err) {
+        if (err) this.response = err.response.data.replace(/"/g, "");
+        else this.response = "Internal Server Error";
+
+        this.dialogIcon = "report";
+        this.dialogHeader = "Sorry";
+        this.resp = true;
+      }
     },
     reject: async function(id) {
       try {
-        const response = await FacultyRequest.historyReject({
+        await FacultyRequest.historyReject({
           id: id
         });
-        this.$router.push("/pendingEvents");
-      } catch (err) {}
-    }
-  },
-  watch: {
-    editmodal: async function() {
-      let el = this.$refs.background;
-      if (this.editmodal) el.style.opacity = 0.2;
-      else el.style.opacity = 1;
+        this.response = "Event has been successfully rejected";
+        this.dialogIcon = "thumb_up";
+        this.dialogHeader = "Congrats";
+        this.resp = true;
+      } catch (err) {
+        if (err) this.response = err.response.data.replace(/"/g, "");
+        else this.response = "Internal Server Error";
+        this.dialogIcon = "report";
+        this.dialogHeader = "Sorry";
+        this.resp = true;
+      }
     }
   }
 };

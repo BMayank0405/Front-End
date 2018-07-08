@@ -36,7 +36,7 @@ export default {
         },
         {
           name: "History",
-          icon: "360",
+          icon: "layers",
           to: "/History"
         }
       ]

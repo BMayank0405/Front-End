@@ -158,7 +158,7 @@
     </v-dialog>
   
     <v-dialog v-model="eventreg" max-width="500">
-      <event-success head="Success" icon="thumb" SuccessMessage="Event has been created successfully." @clicked="evenreg = false"></event-success>
+      <event-success head="Success" icon="thumb_up" SuccessMessage="Event has been created successfully." @clicked="closing()"></event-success>
     </v-dialog>
   
     <v-dialog v-model="eventclash"  max-width="500">
@@ -280,8 +280,8 @@ export default {
       this.venues = response.data.venues;
     } catch (error) {
       if (error) {
-        this.dialogIcon = "";
-        this.dialogHeader = "";
+        this.dialogIcon = "report";
+        this.dialogHeader = "Sorry";
         this.response = "There is some problem while loading page.";
         this.resp = true;
       }
@@ -481,6 +481,9 @@ export default {
   },
 
   methods: {
+    closing: function() {
+      this.eventreg = false;
+    },
     getdata: debounce(async function() {
       if (
         this.startDate &&

@@ -69,7 +69,6 @@ export default {
 }
 
 h2 {
-  line-height: 0;
   font-family: "Yatra One", cursive !important;
   text-shadow: 1px 1px 2px wheat;
 }

@@ -214,7 +214,7 @@
   
       </v-flex>
       <v-flex sm12>
-        <v-card-title class="header">This &nbsp;<b>Venue</b>&nbsp; and &nbsp;<b>DateTime</b>&nbsp; combination has been already taken</v-card-title>
+        <v-card-title class="header">This &nbsp;<b>Venue</b>&nbsp; and &nbsp;<b>Date-Time</b>&nbsp; combination has been already taken</v-card-title>
         <v-card class="clash__card" v-for="event in clashEvents" :key="event.id">
           <v-card-text class="event__name">Name: {{event.name}} </v-card-text>
           <v-card-text class="event__datetime">Date: {{event.startdate}} - {{event.enddate}} </v-card-text>

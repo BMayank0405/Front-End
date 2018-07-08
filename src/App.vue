@@ -44,6 +44,7 @@ export default {
 .application--wrap,
 .v-dialog > .v-card {
   background: linear-gradient(135deg, rgb(236, 143, 143), rgb(149, 149, 251));
+  height: 100%;
 }
 
 label {

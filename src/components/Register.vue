@@ -83,10 +83,10 @@
                         <v-checkbox label="Technical" :error-messages="technicalErrors" prepend-icon="group" color="deep-purple accent-1" v-model="Technical" @blur="delayTouch($v.Technical)" @input="delayTouch($v.Technical)"></v-checkbox>
                       </v-flex>
                       <v-flex xs12>
-                        <v-checkbox label="Cultural" :error-messages="culturalErrors" prepend-icon="person" color="deep-purple lighten-1" v-model="Cultural" @blur="delayTouch($v.Cultural)" @input="delayTouch($v.Cultural)"></v-checkbox>
+                        <v-checkbox label="Cultural" :error-messages="culturalErrors" prepend-icon="group" color="deep-purple lighten-1" v-model="Cultural" @blur="delayTouch($v.Cultural)" @input="delayTouch($v.Cultural)"></v-checkbox>
                       </v-flex>
                       <v-flex xs12>
-                        <v-checkbox label="Techo-Managerial" :error-messages="technoErrors" prepend-icon="person" color="deep-purple darken-4" v-model="Techno_Managerial" @blur="delayTouch($v.Techno_Managerial)" @input="delayTouch($v.Techno_Managerial)"></v-checkbox>
+                        <v-checkbox label="Techo-Managerial" :error-messages="technoErrors" prepend-icon="group" color="deep-purple darken-4" v-model="Techno_Managerial" @blur="delayTouch($v.Techno_Managerial)" @input="delayTouch($v.Techno_Managerial)"></v-checkbox>
                       </v-flex>
                     </v-layout>
                   </transition>
@@ -101,10 +101,10 @@
                   <transition name="soc__category" appear>
                     <v-layout row wrap>
                       <v-flex xs12>
-                        <v-checkbox label="Approving Faculty" :error-messages="approvingErrors" prepend-icon="supervisor_account" color="cyan lighten-2" v-model="ApprovingFaculty" @blur="delayTouch($v.ApprovingFaculty)" @input="delayTouch($v.ApprovingFaculty)"></v-checkbox>
+                        <v-checkbox label="Approving Faculty" :error-messages="approvingErrors" prepend-icon="person" color="cyan lighten-2" v-model="ApprovingFaculty" @blur="delayTouch($v.ApprovingFaculty)" @input="delayTouch($v.ApprovingFaculty)"></v-checkbox>
                       </v-flex>
                       <v-flex xs12>
-                        <v-checkbox label="Managing Faculty" :error-messages="managingErrors" prepend-icon="supervisor_account" color="teal lighten-2" v-model="ManagingFaculty" @blur="delayTouch($v.ManagingFaculty)" @input="delayTouch($v.ManagingFaculty)"></v-checkbox>
+                        <v-checkbox label="Managing Faculty" :error-messages="managingErrors" prepend-icon="person" color="teal lighten-2" v-model="ManagingFaculty" @blur="delayTouch($v.ManagingFaculty)" @input="delayTouch($v.ManagingFaculty)"></v-checkbox>
                       </v-flex>
                     </v-layout>
                   </transition>

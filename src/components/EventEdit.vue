@@ -2,7 +2,7 @@
   <v-app>
     <navbar :searchBar="false"></navbar>
     <v-container>
-      <form-container ref="formContainer" @requiredAction="updateEvent()" :fieldHeader="['U','P','D','A','T','E',' ','E','V','E' ,'N','T']" :errors="error" fieldButton="Update Event" btnIcon="fiber_new">
+      <form-container ref="formContainer" @requiredAction="updateEvent()" :fieldHeader="['U','P','D','A','T','E',' ','E','V','E' ,'N','T']" :errors="error" fieldButton="Update Event" btnIcon="rate_review">
         <div slot="fieldInput">
   
           <v-form autocomplete>
@@ -14,7 +14,7 @@
                   <v-subheader class="fields">Event Name</v-subheader>
                 </v-flex>
                 <v-flex xs12 md8>
-                  <v-text-field label="Enter your event's name" :error-messages="EventNameErrors" v-model.lazy="EventName" prepend-icon="explicit" required autofocus @blur="delayTouch($v.EventName,200)" @input="delayTouch($v.EventName,200)">
+                  <v-text-field label="Enter your event's name" :error-messages="EventNameErrors" v-model.lazy="EventName" prepend-icon="euro_symbol" required @blur="delayTouch($v.EventName,200)" @input="delayTouch($v.EventName,200)">
                   </v-text-field>
                 </v-flex>
               </v-layout>
@@ -133,15 +133,15 @@
                 </v-flex>
               </v-layout>
   
-              <v-dialog v-model="eventclash" @input="resetOpacity()" max-width="400">
+              <v-dialog v-model="eventclash" max-width="400">
                 <event-clash :clashEvents="sendEvents"></event-clash>
   
               </v-dialog>
   
               <!-- event created modal -->
   
-              <v-dialog v-model="eventreg" max-width="500" @input="resetOpacity">
-                <event-success SuccessMessage="Event has been editted successfully."></event-success>
+              <v-dialog v-model="eventreg" max-width="500" style="height:90%;">
+                <event-success  head="Success" icon="thumb_up" SuccessMessage="Event has been editted successfully."  @clicked="closing()" ></event-success>
               </v-dialog>
             </v-container>
           </v-form>
@@ -176,6 +176,7 @@ export default {
   data() {
     return {
       // v-model data
+      id: "",
       EventName: "",
       venue: null,
       startDate: "",
@@ -188,8 +189,6 @@ export default {
       formUrl: "",
       eventreg: false,
       eventfail: false,
-
-      modalActive: false,
 
       //FOR DATE PICKER
       startmenu: false,
@@ -250,23 +249,29 @@ export default {
     }
   },
   created: async function() {
-    const response = await SocietyRequest.getEventById({
-      id: localStorage.getItem("id")
-    });
-    let eventDetail = response.data.returnEvent[0];
-    this.EventName = eventDetail.name;
-    this.venue = eventDetail.venueId;
+    const id = localStorage.getItem("id");
+    if (id) {
+      const response = await SocietyRequest.getEventById({
+        id
+      });
+      let eventDetail = response.data.returnEvent[0];
+      this.id = eventDetail._id;
+      this.EventName = eventDetail.name;
+      this.venue = eventDetail.venueId;
 
-    let start = eventDetail.date.startDate.split("T");
-    this.startDate = start[0];
-    this.startTime = start[1].split(":00.")[0];
-    let end = eventDetail.date.endDate.split("T");
-    this.endDate = end[0];
-    this.endTime = end[1].split(":00.")[0];
-    this.description = eventDetail.description;
-    this.coordinatorName = eventDetail.coordinator.name;
-    this.coordinatorPhone = eventDetail.coordinator.phone;
-    this.formUrl = eventDetail.formUrl;
+      let start = eventDetail.date.startDate.split("T");
+      this.startDate = start[0];
+      this.startTime = start[1].split(":00.")[0];
+      let end = eventDetail.date.endDate.split("T");
+      this.endDate = end[0];
+      this.endTime = end[1].split(":00.")[0];
+      this.description = eventDetail.description;
+      this.coordinatorName = eventDetail.coordinator.name;
+      this.coordinatorPhone = eventDetail.coordinator.phone;
+      this.formUrl = eventDetail.formUrl;
+    } else {
+      this.$router.push("/Status");
+    }
   },
   computed: {
     EventNameErrors() {
@@ -426,17 +431,9 @@ export default {
       required
     }
   },
-  watch: {
-    modalActive: async function() {
-      let el = this.$refs.formContainer.$el;
-      if (this.modalActive) el.style.opacity = 0.2;
-      else el.style.opacity = 1;
-    }
-  },
-
   methods: {
-    resetOpacity: function() {
-      this.modalActive = false;
+    closing: function() {
+      this.eventreg = false;
     },
     getdata: debounce(async function() {
       if (
@@ -526,10 +523,9 @@ export default {
             }
             this.error[10] = true;
             this.eventclash = true;
-            this.modalActive = true;
           } else {
             this.eventclash = false;
-            this.modalActive = false;
+
             this.error[10] = false;
           }
         }
@@ -538,6 +534,7 @@ export default {
     updateEvent: async function() {
       try {
         const response = await SocietyRequest.editEvent({
+          id: this.id,
           name: deburr(this.EventName),
           description: deburr(this.description),
           venueId: this.venue._id,
@@ -557,12 +554,10 @@ export default {
         });
         await localStorage.removeItem("id");
         this.eventreg = true;
-        this.modalActive = true;
       } catch (err) {
         if (err) this.failerror = err.response.data.replace(/"/g, "");
         else this.failerror = "Internal Server Error";
         this.eventfail = true;
-        this.modalActive = true;
       }
     },
     delayTouch: function($v, time) {
@@ -604,5 +599,9 @@ export default {
   .logincontainer {
     transform: translateX(30px);
   }
+}
+
+.heightAdjust {
+  height: 90%;
 }
 </style>

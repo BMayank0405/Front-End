@@ -1,11 +1,11 @@
 <template>
   <v-card>
-    <v-flex class="center">
-      <v-card-title class="headline">Suggest an edit for the Event</v-card-title>
+    <v-flex class="center headline">
+      <v-card-title>Suggest an edit for the Event</v-card-title>
     </v-flex>
       <v-layout wrap justify-center  pr-2>
         <v-flex xs12>
-          <v-text-field label="Suggest an edit for the Event" v-model.lazy="edit" counter="40" multi-line prepend-icon="create" :error-messages="editErrors" required @blur="delayTouch($v.edit,200)" @input="delayTouch($v.edit,1000)">
+          <v-text-field label="Suggest an edit for the Event" v-model.lazy="edit" counter="40"  prepend-icon="create" :error-messages="editErrors" required @blur="delayTouch($v.edit,200)" @input="delayTouch($v.edit,1000)">
           </v-text-field>
         </v-flex>
       </v-layout>

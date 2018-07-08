@@ -2,7 +2,7 @@
   <v-app>
     <navbar :searchBar="false"></navbar>
     <v-container>
-      <form-container ref="formContainer" @requiredAction="update()" :fieldHeader="['U','P','D','A','T','E']" :errors="error" fieldButton="Update" btnIcon="person_add">
+      <form-container  @requiredAction="update()" :fieldHeader="['U','P','D','A','T','E']" :errors="error" fieldButton="Update" btnIcon="place">
         <div slot="fieldInput">
           <v-form autocomplete="off">
             <v-container grid-list-lg class="elevation-10 logincontainer">
@@ -14,10 +14,10 @@
   
                 <v-layout row wrap>
                   <v-flex xs12>
-                    <v-checkbox label="Add Venue" :error-messages="addErrors" prepend-icon="group" color="deep-purple accent-1" v-model="Add" @blur="delayTouch($v.Add)" @input="delayTouch($v.Add)"></v-checkbox>
+                    <v-checkbox label="Add Venue" :error-messages="addErrors" prepend-icon="pin_drop" color="deep-purple accent-1" v-model="Add" @blur="delayTouch($v.Add)" @input="delayTouch($v.Add)"></v-checkbox>
                   </v-flex>
                   <v-flex xs12>
-                    <v-checkbox label="Remove" :error-messages="removeErrors" prepend-icon="person" color="deep-purple lighten-1" v-model="Remove" @blur="delayTouch($v.Remove)" @input="delayTouch($v.Remove)"></v-checkbox>
+                    <v-checkbox label="Remove" :error-messages="removeErrors" prepend-icon="not_listed_location" color="deep-purple lighten-1" v-model="Remove" @blur="delayTouch($v.Remove)" @input="delayTouch($v.Remove)"></v-checkbox>
                   </v-flex>
                 </v-layout>
               </v-layout>
@@ -28,7 +28,7 @@
                     <v-subheader class="fields">Add</v-subheader>
                   </v-flex>
                   <v-flex xs12 md8>
-                    <v-text-field name="venue" clearable :success="!error[1]" label="Enter the venue name" :error-messages="AddVenueErrors" prepend-icon="edit_location" v-model="AddVenue" required @blur="delayTouch($v.AddVenue)" @input="delayTouch($v.AddVenue,300)">
+                    <v-text-field name="venue" clearable :success="!error[1]" label="Enter the venue name" :error-messages="AddVenueErrors" prepend-icon="add_location" v-model="AddVenue" required @blur="delayTouch($v.AddVenue)" @input="delayTouch($v.AddVenue,300)">
                     </v-text-field>
                   </v-flex>
                 </v-layout>
@@ -39,7 +39,7 @@
                     <v-subheader class="fields">Remove</v-subheader>
                   </v-flex>
                   <v-flex xs12 md8>
-                    <v-autocomplete :items="venues" v-model="Venue" item-text="name" :success="!error[1]" :error-messages="RemoveVenueErrors" item-value="_id" label="Select Venue" required autocomplete @blur="delayTouch($v.Venue)" @input="delayTouch($v.Venue)" prepend-icon="account_circle"></v-autocomplete>
+                    <v-autocomplete :items="venues" v-model="Venue" item-text="name" :success="!error[1]" :error-messages="RemoveVenueErrors" item-value="_id" label="Select Venue" required autocomplete @blur="delayTouch($v.Venue)" @input="delayTouch($v.Venue)" prepend-icon="not_listed_location"></v-autocomplete>
                   </v-flex>
                 </v-layout>
               </transition>

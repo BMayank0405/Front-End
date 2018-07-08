@@ -2,7 +2,7 @@
   <v-app>
     <navbar :searchBar="false"></navbar>
     <v-container class="centering" grid-list-lg>
-      <v-layout ref="pendingback" row wrap justify-space-around>
+      <v-layout row wrap justify-space-around>
         <transition-group name="cell" tag="div" class="event__card">
           <v-flex sm12 md6 class="card__style" v-for="event in events" :key="event._id">
             <event-card :event="event">
@@ -24,19 +24,24 @@
           </v-flex>
         </transition-group>
       </v-layout>
+      <v-layout v-if="events.length == 0">
+        <page-header>
+          <span slot="pageheader" class="flex-center" style="text-transform:capitalize">Nothing to show</span>
+        </page-header>
+      </v-layout>
   
   
-      <!-- <v-dialog v-model="editmodal"  max-width="500px">
+      <v-dialog v-model="editmodal"  max-width="500px">
         <suggest-edit @clicked="edit"></suggest-edit>
       </v-dialog>
+ 
+    <v-dialog v-model="resp" max-width="500">
+      <generic-response :message="response" :header="dialogHeader" :icon="dialogIcon"  @clicked="resp = false"></generic-response>
+    </v-dialog>
   
-      <v-dialog v-model="Success" @input="window.location.reload()" max-width="500px">
-        <event-success :SuccessMessage="successMessage"></event-success>
-      </v-dialog>
-  
-      <v-dialog v-model="Failure" @input="window.location.reload()" max-width="500px">
-        <event-fail :error="failerror"></event-fail>
-      </v-dialog> -->
+    <v-dialog v-model="eventreg" max-width="500">
+      <event-success head="Success" icon="thumb_up" SuccessMessage="Event has been accepted Successfully." @clicked="closing()"></event-success>
+    </v-dialog>
     </v-container>
   
   
@@ -51,10 +56,12 @@ import FacultyRequest from "@/services/FacultyRequest";
 
 const CardHeader = () => import("./Card/CardHeader");
 const Card = () => import("./Card/Card");
+const PageHeader = () => import("./Commons/PageHeader.vue");
 const Navbar = () => import("./Navbar.vue");
 const CardButton = () => import("./Card/CardButton");
 const SuggestEdit = () => import("./Dialogs/SuggestEdit");
 const EventSuccess = () => import("./Dialogs/EventSuccess");
+const GenericResponse = () => import("./Dialogs/GenericResponse");
 
 export default {
   components: {
@@ -63,18 +70,20 @@ export default {
     "event-card": Card,
     "card-button": CardButton,
     "suggest-edit": SuggestEdit,
-    "event-success": EventSuccess
+    "event-success": EventSuccess,
+    "generic-response": GenericResponse,
+    "page-header": PageHeader
   },
   data() {
     return {
       events: [],
       editmodal: false,
       editId: null,
-      Success: false,
-      successMessage: "",
-      Failure: false,
-      failerror: "",
-      modalActive: false
+      eventreg: false,
+      resp: false,
+      response: "",
+      dialogIcon: "",
+      dialogHeader: ""
     };
   },
   beforeCreate: async function() {
@@ -92,14 +101,14 @@ export default {
       const response = await FacultyRequest.pendingEvents();
       this.events = response.data.returnEvent;
     } catch (err) {
-      if (err) this.failerror = err.response.data;
-      else this.failerror = "Internal Server Error";
+      if (err) this.response = err.response.data;
+      else this.response = "Internal Server Error";
       this.Failure = true;
     }
   },
   methods: {
-    resetOpacity: function() {
-      this.modalActive = false;
+    closing: function() {
+      this.eventreg = false;
     },
     suggestEdit: function(id) {
       this.editId = id;
@@ -111,15 +120,18 @@ export default {
           id: this.editId,
           edit: value
         });
-        this.successMessage =
-          "Event has been successfully put in editing phase";
-        this.modalActive = true;
-        this.Success = true;
+        this.editmodal = false;
+        this.response = "Event has been successfully put in editing phase";
+        this.dialogIcon = "thumb_up";
+        this.dialogHeader = "Congrats";
+        this.resp = true;
       } catch (err) {
-        if (err) this.failerror = err.response.data;
-        else this.failerror = "Internal Server Error";
-        this.modalActive = true;
-        this.Failure = true;
+        if (err) this.response = err.response.data.replace(/"/g, "");
+        else this.response = "Internal Server Error";
+        this.editmodal = false;
+        this.dialogIcon = "report";
+        this.dialogHeader = "Sorry";
+        this.resp = true;
       }
     },
     accept: async function(id) {
@@ -127,14 +139,14 @@ export default {
         await FacultyRequest.approve({
           id: id
         });
-        this.successMessage = "Event has been successfully Accepted";
-        this.modalActive = true;
-        this.Success = true;
+        this.eventreg = true;
       } catch (err) {
-        if (err) this.failerror = err.response.data;
-        else this.failerror = "Internal Server Error";
-        this.modalActive = true;
-        this.Failure = true;
+        if (err) this.response = err.response.data.replace(/"/g, "");
+        else this.response = "Internal Server Error";
+
+        this.dialogIcon = "report";
+        this.dialogHeader = "Sorry";
+        this.resp = true;
       }
     },
     reject: async function(id) {
@@ -142,22 +154,17 @@ export default {
         await FacultyRequest.decline({
           id: id
         });
-        this.successMessage = "Event has been successfully rejected";
-        this.modalActive = true;
-        this.Success = true;
+        this.response = "Event has been successfully rejected";
+        this.dialogIcon = "thumb_up";
+        this.dialogHeader = "Congrats";
+        this.resp = true;
       } catch (err) {
-        if (err) this.failerror = err.response.data;
-        else this.failerror = "Internal Server Error";
-        this.modalActive = true;
-        this.Failure = true;
+        if (err) this.response = err.response.data.replace(/"/g, "");
+        else this.response = "Internal Server Error";
+        this.dialogIcon = "report";
+        this.dialogHeader = "Sorry";
+        this.resp = true;
       }
-    }
-  },
-  watch: {
-    modalActive: async function() {
-      let el = this.$refs.pendingback;
-      if (this.modalActive) el.style.opacity = 0.2;
-      else el.style.opacity = 1;
     }
   }
 };
@@ -185,6 +192,12 @@ export default {
 
 .cell-move {
   transition: transform 600ms;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 </style>
 
