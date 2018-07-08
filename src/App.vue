@@ -42,7 +42,7 @@ export default {
   font-family: "Lora", serif !important;
 }
 .application--wrap,
-.dialog > .card {
+.v-dialog > .v-card {
   background: linear-gradient(135deg, rgb(236, 143, 143), rgb(149, 149, 251));
 }
 
@@ -50,16 +50,16 @@ label {
   font-family: "Lora", serif;
 }
 
-.list__tile__title {
+.v-list__tile__title {
   text-transform: capitalize;
   font: {
     size: 1.1rem;
   }
 }
 
-.btn--active .btn__content:before,
-.btn:focus .btn__content:before,
-.btn:hover .btn__content:before {
+.v-btn--active .v-btn__content:before,
+.v-btn:focus .v-btn__content:before,
+.v-btn:hover .v-btn__content:before {
   background-color: transparent !important;
 }
 @media screen and (min-width: 1000px) {
@@ -75,7 +75,7 @@ label {
   }
 }
 
-.dialog {
+.v-dialog {
   border-radius: 10px !important;
   & .headline {
     background: #8081864d;
@@ -89,26 +89,26 @@ label {
 
 //navbar global styles
 
-.toolbar__content {
+.v-toolbar__content {
   flex-wrap: wrap !important;
   width: 90%;
   margin: 0 auto;
 }
 
 @media screen and (min-width: 700px) {
-  .toolbar__title {
+  .v-toolbar__title {
     margin-left: 4rem !important;
   }
   .society-name {
     margin-right: 5px !important;
   }
-  .toolbar__content > .btn:last-child {
+  .v-toolbar__content > .v-btn:last-child {
     margin-right: 2rem !important;
   }
 }
 
 @media screen and (max-width: 400px) {
-  .toolbar__content {
+  .v-toolbar__content {
     width: 100%;
   }
 }

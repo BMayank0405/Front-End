@@ -25,7 +25,7 @@
                   <v-subheader class="fields">Select Venue</v-subheader>
                 </v-flex>
                 <v-flex xs12 md8>
-                  <v-select class="select__box" :items="venues" v-model.lazy="venue" item-text="name" item-value="_id" label="Select Venue" prepend-icon="edit_location" autocomplete :error-messages="venueErrors" @blur="delayTouch($v.venue,200)" @input="delayTouch($v.venue,200)"></v-select>
+                  <v-autocomplete class="select__box" :items="venues" v-model.lazy="venue" item-text="name" item-value="_id" label="Select Venue" prepend-icon="edit_location" autocomplete :error-messages="venueErrors" @blur="delayTouch($v.venue,200)" @input="delayTouch($v.venue,200)"></v-autocomplete>
                 </v-flex>
               </v-layout>
   

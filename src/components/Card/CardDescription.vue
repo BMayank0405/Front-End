@@ -81,7 +81,7 @@ export default {
 
 <style lang="scss" scoped>
 $delay: 1.2s;
-.card__text {
+.v-card__text {
   position: relative;
   z-index: 4;
   display: flex;
@@ -131,7 +131,7 @@ $delay: 1.2s;
 }
 
 @media screen and (max-width: 400px) {
-  .card__text {
+  .v-card__text {
     &:first-of-type {
       padding: 8px;
       & > h1 {

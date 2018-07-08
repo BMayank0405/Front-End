@@ -13,9 +13,11 @@
     <v-spacer></v-spacer>
   
     <div v-if="searchBar" :class="{ order: width}" class="list__items">
-      <v-select prepend-icon="search" slot="extended" multiple :items="societies" v-model="society" item-text="username" persistent-hint item-value="_id" label="Search Event By Society" autocomplete @blur="search()">
-      </v-select>
+      <v-autocomplete prepend-icon="search" slot="extended" multiple :items="societies" v-model="society" item-text="username" persistent-hint item-value="_id" label="Search Event By Society" autocomplete @blur="search()" style="transform:translateY(10px)">
+      </v-autocomplete>
     </div>
+
+
     <v-btn class="navbar__buttons" v-if="this.$store.state.isloggedIn" @click.native.stop="changepwd = true" :icon="width" :flat="!width" :depressed="!width">
       <v-avatar>
         <v-icon dark>security</v-icon>
@@ -169,6 +171,9 @@ export default {
 }
 
 .navbar__buttons {
+  &::before {
+    background-color: transparent !important;
+  }
   font: {
     family: "Lora", serif;
     size: 1.24rem;
@@ -178,8 +183,8 @@ export default {
     right: 0px;
   }
   &:hover,
-  &:focus {
-    background-color: transparent;
+  &:focus::before {
+    background-color: transparent !important;
   }
   text-transform: capitalize;
   @media screen and (max-width: 699px) {

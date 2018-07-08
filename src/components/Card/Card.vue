@@ -1,6 +1,6 @@
 <template>
 <transition name="card" appear>
-  <v-card hover dark raised :class="[event.color, `${event.shade}-3`]" class="white--text MidHeight" ref="eventCard">
+  <v-card hover dark raised :class="[event.color, `${event.shade}-3`]" class="white--text MidHeight card" ref="eventCard">
   
     <slot name="cardHeader"></slot>
   
