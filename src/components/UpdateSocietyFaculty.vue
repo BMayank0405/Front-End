@@ -138,10 +138,10 @@
                   <div v-else>
                   <v-layout>
                     <v-flex class="hidden-sm-and-down" md4>
-                      <v-subheader class="fields">Approving Faculty</v-subheader>
+                      <v-subheader class="fields">Replace with</v-subheader>
                     </v-flex>
                     <v-flex xs12 md8>
-                      <v-autocomplete prepend-icon="record_voice_over" :items="Approving_Faculty_Array" v-model="App_Replace" item-text="username" item-value="_id" label="Select Approving Faculty for the society" autocomplete required :error-messages="approvereplaceErrors"
+                      <v-autocomplete prepend-icon="record_voice_over" :items="Approving_Faculty_Array" v-model="App_Replace" item-text="username" item-value="_id" label="Select Approving Faculty" autocomplete required :error-messages="approvereplaceErrors"
                         @blur="delayTouch($v.App_Replace,100)" @input="delayTouch($v.App_Replace,500)"></v-autocomplete>
                     </v-flex>
                   </v-layout>
@@ -348,14 +348,15 @@ export default {
       if (Object.keys(sendObj).length != 0) {
         sendObj.id = this.userid;
         let fac = [3, 4];
-        let result;
+        let result = true;
         if (fac.includes(this.flag) && this.user.flag != this.flag) {
           let replace;
+          result =false; 
           if (this.user.flag == 3) {
             replace = this.Man_Replace;
           } else replace = this.App_Replace;
           try {
-            const faculty_replace = await AdminRequest.replaceFaculty({
+            await AdminRequest.replaceFaculty({
               id: sendObj.id,
               flag: this.user.flag,
               replace
@@ -389,7 +390,7 @@ export default {
         }
         if (result) {
           try {
-            const response = await AdminRequest.updateSocietyFaculty(sendObj);
+            await AdminRequest.updateSocietyFaculty(sendObj);
 
             this.dialogIcon = "Congrats";
             this.dialogHeader = "thumbs_up";
