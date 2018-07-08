@@ -36,5 +36,8 @@ export default {
   },
   replaceFaculty(data) {
     return AxiosAdmin().put("/replace-faculty", data);
+  },
+  removeUser(data){
+    return AxiosAdmin().put("/remove-user", data);
   }
 };

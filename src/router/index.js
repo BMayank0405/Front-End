@@ -60,6 +60,12 @@ export default new Router({
         import ("@/components/UpdateSocietyFaculty")
     },
     {
+      path: "/removeSocietyFaculty",
+      name: "removeSocietyFaculty",
+      component: () =>
+        import ("@/components/removeSocietyFaculty")
+    },
+    {
       path: "/Status",
       name: "Status",
       component: () =>
