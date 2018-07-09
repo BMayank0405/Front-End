@@ -109,7 +109,110 @@ const webpackConfig = merge(baseWebpackConfig, {
     new workboxPlugin.GenerateSW({
       swDest: "service-worker.js",
       clientsClaim: true,
-      skipWaiting: true
+      skipWaiting: true,
+      runtimeCaching: [{
+          urlPattern: /get-event/,
+          handler: 'networkFirst',
+          options: {
+            networkTimeoutSeconds: 3,
+            cacheName: 'event-cache',
+            expiration: {
+              maxEntries: 20,
+              maxAgeSeconds: 24 * 60 * 60,
+            }
+          }
+        },
+        {
+          urlPattern: /all-societies/,
+          handler: 'networkFirst',
+          options: {
+            networkTimeoutSeconds: 3,
+            cacheName: 'society-cache',
+            expiration: {
+              maxEntries: 20,
+              maxAgeSeconds: 24 * 60 * 60,
+            }
+          }
+        },
+        {
+          urlPattern: /all-venues/,
+          handler: 'networkFirst',
+          options: {
+            networkTimeoutSeconds: 3,
+            cacheName: 'venue-cache',
+            expiration: {
+              maxEntries: 20,
+              maxAgeSeconds: 24 * 60 * 60,
+            }
+          }
+        }, {
+          urlPattern: /society\/status/,
+          handler: 'networkFirst',
+          options: {
+            networkTimeoutSeconds: 3,
+            cacheName: 'society-status',
+            expiration: {
+              maxEntries: 20,
+              maxAgeSeconds: 24 * 60 * 60,
+            }
+          }
+        }, {
+          urlPattern: /faculty\/pending-events/,
+          handler: 'networkFirst',
+          options: {
+            networkTimeoutSeconds: 3,
+            cacheName: '-status',
+            expiration: {
+              maxEntries: 20,
+              maxAgeSeconds: 24 * 60 * 60,
+            }
+          }
+        }, {
+          urlPattern: /faculty\/history/,
+          handler: 'networkFirst',
+          options: {
+            networkTimeoutSeconds: 3,
+            cacheName: 'faculty-history',
+            expiration: {
+              maxEntries: 20,
+              maxAgeSeconds: 24 * 60 * 60,
+            }
+          }
+        }, {
+          urlPattern: /admin\/get-head/,
+          handler: 'networkFirst',
+          options: {
+            networkTimeoutSeconds: 3,
+            cacheName: 'admin-head',
+            expiration: {
+              maxEntries: 20,
+              maxAgeSeconds: 24 * 60 * 60,
+            }
+          }
+        }, {
+          urlPattern: /admin\/getAllUsers/,
+          handler: 'networkFirst',
+          options: {
+            networkTimeoutSeconds: 3,
+            cacheName: 'admin-allusers',
+            expiration: {
+              maxEntries: 20,
+              maxAgeSeconds: 24 * 60 * 60,
+            }
+          }
+        },
+        {
+          urlPattern: new RegExp(/https:\/\/fonts.(?:googleapis|gstatic).com\/(.*)/),
+          handler: 'cacheFirst',
+          options: {
+            cacheName: 'google-api-cache',
+            expiration: {
+              maxEntries: 20,
+              maxAgeSeconds: 24 * 60 * 60,
+            }
+          }
+        }
+      ]
     })
 
 
